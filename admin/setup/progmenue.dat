@@ -1,0 +1,6 @@
+<option value="admin.php?go=startseite">Startseite Administration</option>
+<option value="admin.php?go=systemdaten">Systemdaten einstellen</option>
+<option value="admin_bilder.php?go=neue">Neue Bilder</option>
+<option value="admin_bilder.php">Liste aller Bilder</option>
+<option value="admin_bilder.php?go=op">Alte Bilder l&ouml;schen</option>
+<option value="admin_bilder.php?go=tl">Trafficlogs l&ouml;schen</option>
