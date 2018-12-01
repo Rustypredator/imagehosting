@@ -1,13 +1,43 @@
-<a href="admin.php?go=startseite" title="Startseite der Administration aufrufen"><span>&nbsp;</span> Startseite</a>
-<a href="../" title="Bilduplod Webseite aufrufen"><span>&nbsp;</span> Bilduplod Webseite</a>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <a class="navbar-brand" href="./">Admin</a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
 
-<div class="rub"><b>System</b></div>
-<a href="admin.php?go=systemdaten" title="Systemdaten anpassen"><span>&nbsp;</span> Systemeinstellungen</a>
-<a href="admin.php?go=admindaten" title="Admin Username und Passwort ändern"><span>&nbsp;</span> Admindaten</a>
-<a href="admin.php?go=adminlog" title="Loginstatistik Admin ansehen"><span>&nbsp;</span> Loginstatistik Admin</a>
-
-<div class="rub"><b>Bildverwaltung</b></div>
-<a href="admin_bilder.php?go=neue" title="Neue Bilder der letzten 24 Stunden"><span>&nbsp;</span> Neue Bilder</a>
-<a href="admin_bilder.php" title="Liste aller Bilder ansehen"><span>&nbsp;</span> Alle Bilder</a>
-<a href="admin_bilder.php?go=op" title="Bilder l&ouml;schen deren Speicherzeitraum abgelaufen ist"><span>&nbsp;</span> Alte Bilder l&ouml;schen</a>
-<a href="admin_bilder.php?go=tl" title="Alte Trafficlogs l&ouml;schen"><span>&nbsp;</span> Trafficlogs l&ouml;schen</a>
+    <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
+            <li class="nav-item"><a class="nav-link" href="admin.php?go=startseite"><i class="fas fa-home"></i>&nbsp;Startseite</a></li>
+            <li class="nav-item"><a class="nav-link" href="../"><i class="fas fa-upload"></i>&nbsp;Bildupload Webseite</a></li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-server"></i>&nbsp;System
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="admin.php?go=systemdaten"><i class="fas fa-cog"></i>&nbsp;Systemeinstellungen</a>
+                    <a class="dropdown-item" href="admin.php?go=admindaten"><i class="fas fa-database"></i>&nbsp;Admindaten</a>
+                    <a class="dropdown-item" href="admin.php?go=adminlog"><i class="fas fa-list"></i>&nbsp;Loginstatistik Admin</a>
+                </div>
+            </li>
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <i class="fas fa-images"></i>&nbsp;Bildverwaltung
+                </a>
+                <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                    <a class="dropdown-item" href="admin_bilder.php?go=neue"><i class="fas fa-fire"></i>&nbsp;Neue Bilder</a>
+                    <a class="dropdown-item" href="admin_bilder.php"><i class="fas fa-images"></i>&nbsp;Alle Bilder</a>
+                    <a class="dropdown-item" href="admin_bilder.php?go=op"><i class="fas fa-trash"></i>&nbsp;Alte Bilder l&ouml;schen</a>
+                    <a class="dropdown-item" href="admin_bilder.php?go=tl"><i class="fas fa-trash"></i>&nbsp;Trafficlogs l&ouml;schen</a>
+                </div>
+            </li>
+        </ul>
+        <form class="form-inline my-2 my-lg-0">
+            <select class="form-control mr-sm-2" name="gourl" size=1 onchange="pulldown(this.form)">
+                <option value="0">Auswahl treffen</option>
+                <%%PROGAMMMENUE%%>
+            </select>
+            <button class="btn btn-outline-success my-2 my-sm-0" onClick="pulldown(this.form)" type="submit">GO</button>
+        </form>
+        <li class="nav-item my-2 my-lg-0"><a class="nav-link" href="admin.php?go=logout" onclick="return confirm('M&ouml;chten Sie sich wirklich abmelden?\nWenn Sie jetzt auf OK klicken werden Sie aus der Administration ausgeloggt.')"><i class="fas fa-sign-out-alt"></i>&nbsp;Logout</a></li>
+        </ul>
+    </div>
+</nav>

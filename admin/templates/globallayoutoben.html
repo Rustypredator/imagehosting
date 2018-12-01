@@ -1,35 +1,12 @@
-<table cellspacing="1" cellpadding="0" border="0" id="haupt" width="100%">
-<thead>
-<tr>
-    <td colspan="2" class="smalltrenn"><img src="../misc/pixel.gif" alt="" width="1" height="1" border="0"></td>
-</tr>
-<tr>
-      <th align="left" id="topnava"><b>&raquo;</b> <a href="admin.php?go=logout" onClick="return confirm('M&ouml;chten Sie sich wirklich abmelden?\nWenn Sie jetzt auf OK klicken werden Sie aus der Administration ausgeloggt.')"><b>Abmelden</b></a>
-</th>
-
-      <th align="right" id="topnavb"><b>Gehe zu</b>&nbsp; 
-<form>
-<select class="inpu" name="gourl" size=1 onchange="pulldown(this.form)">
-<option value="0">Auswahl treffen</option>
-<%%PROGAMMMENUE%%>
-</select>
-<input type="button" value="GO" class="los" onClick="pulldown(this.form)">
-</form>
-</th>
-</tr>
-<tr>
-      <th id="thleft">Navigation</th>
-      <th id="thright"><b><%%SEITENTITEL%%></b></th>
-</tr>
-</thead>
-<tr>
-    <td id="menue">
-	<%%NAVIGATION%%>
-	
-	<img src="../misc/pixel.gif" alt="" width="170" height="1" border="0"><br>
-	</td>
-    <td id="content">
-<!-- HAUPTINHALTSBEREICH ANFANG -->	
+<%%NAVIGATION%%>
+<!-- CONTENTBEREICH ANFANG -->
+<div class="container-fluid" style="margin-top:50px">
+        <div class="row justify-content-md-center">
+            <div class="col-sm-12 col-md-6">
+                <div class="card">
+                    <div class="card-header">
+                        <%%SEITENTITEL%%>
+                    </div>
 
 
 

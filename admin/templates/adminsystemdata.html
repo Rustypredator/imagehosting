@@ -1,0 +1,72 @@
+<table class="table table-striped table-hover card-body">
+    <thead>
+        <th>Einstellung</th>
+        <th>Wert</th>
+    </thead>
+    <tbody>
+        <tr>
+            <td colspan="2"><b>Systempfade und URLs</b> Nur &auml;ndern wenn unbedingt n&ouml;tig!</td>
+        </tr>
+        <tr>
+            <td>Pfad zum html Verzeichnis (kein / am Ende)</td>
+            <td><input class="form-control" type="text" name="htmlpfad" value="<%%HTMLPATH%%>"></td>
+        </tr>
+        <tr>
+            <td>Pfad zum Admin Verzeichnis (kein / am Ende)</td>
+            <td><input class="form-control" type="text" name="adminpfad" value="<%%ADMINPATH%%>"></td>
+        </tr>
+        <tr>
+            <td>URL zum html Verzeichnis (kein / am Ende)</td>
+            <td><input class="form-control" type="text" name="htmlurl" value="<%%HTMLURL%%>"></td>
+        </tr>
+        <tr>
+            <td>URL zum Adminverzeichnis</td>
+            <td><input class="form-control" type="Text" name="adminurl" value="<%%ADMINURL%%>"></td>
+        </tr>
+        <tr>
+            <td>URL zu Ihrer Homepage</td>
+            <td><input class="form-control" type="Text" name="homepageurl" value="<%%HOMEPAGEURL%%>"></td>
+        </tr>
+        <tr>
+            <td>Name/Titel Ihrer Homepage</td>
+            <td><input class="form-control" type="Text" name="sitetitel" value="<%%SITETITLE%%>"></td>
+        </tr>
+        <tr>
+            <td colspan="2"><b>Setupdaten f&uuml;r den Bildupload</b></td>
+        </tr>
+        <tr>
+            <td>Maximale Bildgr&ouml;&szlig;e in MB</td>
+            <td><input class="form-control" type="text" name="maxpicuploadmb" value="<%%MAXIMGSIZE%%>" maxlength="10"></td>
+        </tr>
+        <tr>
+            <td>Maximaler Speicherplatz im MB f&uuml;r Bilder</td>
+            <td><input class="form-control" type="Text" name="maxspeicherplatz" value="<%%MAXSPACE%%>" maxlength="10"></td>
+        </tr>
+        <tr>
+            <td>Bilder nach wievielen Tagen l&ouml;schen?<br>(0 f&uuml;r keine L&ouml;schung von Bildern)</td>
+            <td><input type="form-control" class="inpu" style="width: 80px;" name="picdelete" size="10" value="<%%DELTIME%%>"  maxlength="6"></td>
+        </tr>
+        <tr>
+            <td>Breite und H&ouml;he der Thumbnails</td>
+            <td>
+                Breite: <input type="text" class="form-control" name="thumbwidth" value="<%%THUMBWIDTH%%>" maxlength="6">
+                H&ouml;he: <input type="text" class="form-control" name="thumbheight" value="<%%THUMBHEIGHT%%>" maxlength="6">
+            </td>
+        </tr>
+        <tr>
+            <td colspan="2"><b>Administrator Kontaktdaten und E-Mail Signatur</b></td>
+        </tr>
+        <tr>
+            <td>Betreiber/Administrator Name</td>
+            <td><input class="form-control" type="Text" name="adminname" value="<%%ADMINNAME%%>"></td>
+        </tr>
+        <tr>
+            <td>E-Mail Adresse</td>
+            <td><input class="form-control" type="Text" name="adminmail" value="<%%ADMINMAIL%%>"></td>
+        </tr>
+    </tbody>
+    <input type="submit" class="btn btn-success" value="Daten speichern">
+    <div class="alert alert-danger">
+        Bitte Einstellungen nach dem speichern pr&uuml;fen!
+    </div>
+</table>
