@@ -1,0 +1,9 @@
+AuthType Basic
+<Limit GET>
+	Order Allow,Deny
+	Deny from all
+</Limit>
+<Limit POST>
+	Order Allow,Deny
+	Deny from all
+</Limit>

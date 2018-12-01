@@ -1,0 +1,251 @@
+/* - - - - - - - - - - - - - - - - - - - - */
+/* Body */
+/* - - - - - - - - - - - - - - - - - - - - */
+body, html {
+background: #ffffff url(images/bg.jpg);
+font-family: Verdana, Arial, sans-serif;
+font-size: 12px;
+color: #000000;
+margin: 0 0 5px 0;
+padding: 0;
+}
+/* - - - - - - - - - - - - - - - - - - - - */
+/* Aeussere Contentbox */
+/* - - - - - - - - - - - - - - - - - - - - */
+#inhalt {
+background: #ffffff;
+margin:10px auto;
+text-align:left;
+width: 850px;
+border: 1px solid #e4e4e4;
+padding: 5px;
+}
+/* - - - - - - - - - - - - - - - - - - - - */
+/* Headerbereich */
+/* - - - - - - - - - - - - - - - - - - - - */
+#topsmall {
+background: #5960AE;
+height: 8px;
+border-bottom: 2px solid #ffffff;
+}
+#topbanner {
+background: #FBAC49 url(images/topbg2.gif);
+height: 95px;
+border-bottom: 2px solid #ffffff;
+}
+
+#menuetopline {
+background: #5960ae;
+height: 4px;
+padding: 0;
+}
+
+#menuebottomline {
+background: #5960ae;
+height: 4px;
+padding: 0;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - */
+/* CSS fuer Topnavigation */
+/* - - - - - - - - - - - - - - - - - - - - */
+#topmenue {
+background-color: #f3c278;
+border-top: 1px solid #cc9900;
+border-bottom: 1px solid #cc9900;
+font-size: 11px;
+}
+#topmenue a {
+background-color: #fef4d6;
+border-right: 1px solid #cc3300;
+color: #993300;
+float: left;
+font-weight: bold;
+line-height: 25px;
+padding: 0 10px;
+text-decoration: none;
+}
+#topmenue a:hover {
+background: #cc9900;
+color: #ffffff;
+}
+
+
+/* - - - - - - - - - - - - - - - - - - - - */
+/* Menue und Content */
+/* - - - - - - - - - - - - - - - - - - - - */
+
+#contenttop {
+color: #000000;
+padding: 3px 3px 3px 8px;
+font-size: 11px;
+font-weight: normal;
+background: #FCE1B4; 
+white-space: nowrap;
+border: 1px solid #DE7501;
+}
+
+#contenttop a {
+color: #990000;
+text-decoration: none;
+}
+#contenttop a:hover {
+color: #000000;
+text-decoration: underline;
+}
+
+#content {
+color: #000000;
+padding: 3px 0px 3px 0px;
+font-size: 11px;
+font-weight: normal;
+background: #ffffff; 
+vertical-align: top;
+}
+/* - - - - - - - - - - - - - - - - - - - - */
+/* Footerbereich*/
+/* - - - - - - - - - - - - - - - - - - - - */
+#footer {
+color: #000000;
+padding: 3px;
+font-size: 11px;
+font-weight: normal;
+background: #FCE1B4; 
+border-top: 1px solid #DE7501;
+border-bottom: 1px solid #DE7501;
+text-align: center;
+}
+
+#footer a {
+color: #990000;
+padding: 3px;
+font-size: 11px;
+font-weight: normal;
+text-decoration: none;
+}
+#footer a:hover {
+color: #000000;
+padding: 3px;
+font-size: 11px;
+font-weight: normal;
+text-decoration: underline;
+}
+
+
+/* - - - - - - - - - - - - - - - - - - - - */
+/* Standard Tabellen fuer Contentausgaben*/
+/* - - - - - - - - - - - - - - - - - - - - */
+.tbinnen {
+border: 1px solid #F5DEA9;
+margin-bottom: 5px;
+}
+
+.tbinnend {
+padding: 3px;
+font-size: 11px;
+color: #000000;
+line-height: 1.5em;
+}
+
+.tbinnenh1, .tbinnenh2, .tbinnenw {
+padding: 3px;
+font-size: 11px;
+color: #000000;
+line-height: 1.5em;
+}
+
+.tbinnend {
+background: #FCE1B4;
+font-weight: bold;
+}
+
+.tbinnenh1 {
+background: #fbf3e3;
+}
+
+.tbinnenh2 {
+background: #FDFAF4;
+}
+
+.tbinnenw {
+background: #ffffff;
+}
+
+.tbinnend a {
+color: #990000;
+text-decoration: underline;
+}
+.tbinnend a:hover {
+color: #e10000;
+text-decoration: underline;
+}
+
+.tbinnenh1 a, .tbinnenh2 a, .tbinnenw a {
+color: #990000;
+text-decoration: underline;
+}
+.tbinnenh1 a:hover, .tbinnenh2 a:hover, .tbinnenw a:hover {
+color: #e10000;
+text-decoration: underline;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - */
+/* Formulare*/
+/* - - - - - - - - - - - - - - - - - - - - */
+form {display: inline;}
+
+.mb {
+background-color: #ffffff;
+border: 1px solid #eabd82;
+font-family: Verdana, Arial, sans-serif;
+color: #000000;
+font-size: 11px;
+}
+
+.los {
+background-color: #cc6600;
+border: 1px solid #eabd82;
+color: #ffffff;
+font-size: 11px;
+}
+
+.losred {
+background-color: #c60000;
+border: 1px solid #000000;
+color: #ffcc00;
+font-size: 11px;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - */
+/* Fehler Hinweise rot/gruen*/
+/* - - - - - - - - - - - - - - - - - - - - */
+.tippred {
+color: red;
+font-weight: bold;
+}
+
+.tippgreen {
+color: green;
+font-weight: bold;
+}
+
+.copyright {
+color: #000000;
+font-size: 11px;
+text-align: center;
+}
+
+#layer_upstatus {
+position:absolute;
+width:400px;
+height:200px;
+z-index:1;
+background-color: #FFFFFF;
+border: 1px solid #000000;
+left: 50%;
+margin-left: -195px;
+top: 38%;
+margin-top: -65px;
+visibility: hidden;
+}
+/* - - - - - - - - - - - - - - - - - - - - */

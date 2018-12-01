@@ -2,39 +2,39 @@
 error_reporting(E_ALL & ~E_NOTICE);
 
 if (!defined('SCRIPTSECURE')) {
-echo 'Unzul&auml;ssiger Scriptaufruf';
-exit;
+    echo 'Unzul&auml;ssiger Scriptaufruf';
+    exit;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 // Popuptemplatejavascript
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-function popupjs($pb, $ph) {
+function popupjs($pb, $ph)
+{
+    $popupjs = "<script language=\"JavaScript\" type=\"text/javascript\">
+    <!--
+    function auf(url) {
+    windowName = \"content\";
+    options  = \"\";
+    options += \"toolbar=0,\";
+    options += \"location=0,\";
+    options += \"directories=0,\";
+    options += \"status=0,\";
+    options += \"menubar=0,\";
+    options += \"scrollbars=1,\";
+    options += \"resizable=1,\";
+    options += \"width=".$pb.",\";
+    options += \"height=".$ph.",\";
+    options += \"dependent=1\";
+    win = window.open(url, windowName , options);
+    if (!win.opener) {
+    win.opener = window;
+    }
+    };
+    //-->
+    </script>";
 
-$popupjs = "<script language=\"JavaScript\" type=\"text/javascript\">
-<!--
-function auf(url) {
-windowName = \"content\";
-options  = \"\";
-options += \"toolbar=0,\";
-options += \"location=0,\";
-options += \"directories=0,\";
-options += \"status=0,\";
-options += \"menubar=0,\";
-options += \"scrollbars=1,\";
-options += \"resizable=1,\";
-options += \"width=".$pb.",\";
-options += \"height=".$ph.",\";
-options += \"dependent=1\";
-win = window.open(url, windowName , options);
-if (!win.opener) {
-win.opener = window;
-}
-};
-//-->
-</script>";
-
-return $popupjs;
+    return $popupjs;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
@@ -42,129 +42,131 @@ return $popupjs;
 // Aufruf mit $wertestring und Trennzeichen
 // echo und_string("gif|jpeg|png|bmp", '|');
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-function und_string($werte, $trennzeichen) {
+function und_string($werte, $trennzeichen)
+{
+    $wertearray = explode($trennzeichen, $werte);
+    $anzahl = count($wertearray);
 
-$wertearray = explode($trennzeichen, $werte);
-$anzahl = count($wertearray);
-
-if ($anzahl == 1) {
-$und_string = $wertearray[0];
-} elseif ($anzahl == 2) {
-$und_string = implode(' und ', $wertearray);
-} elseif ($anzahl > 2) {
-$letztes = array_pop($wertearray); 
-$und_string = implode(', ', $wertearray) .' und ' . $letztes;
-}
- 
-return $und_string;
+    if ($anzahl == 1) {
+        $und_string = $wertearray[0];
+    } elseif ($anzahl == 2) {
+        $und_string = implode(' und ', $wertearray);
+    } elseif ($anzahl > 2) {
+        $letztes = array_pop($wertearray); 
+        $und_string = implode(', ', $wertearray) .' und ' . $letztes;
+    }
+    
+    return $und_string;
 }
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 // Auswahlfeld Selectform erstellen
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-function make_selectform($conf_wert, $optionsvalues, $optionstexte) {
+function make_selectform($conf_wert, $optionsvalues, $optionstexte)
+{
+    $optionsvalarray = explode('||', $optionsvalues);
+    $optionstxtarray = explode('||', $optionstexte);
 
-$optionsvalarray = explode('||', $optionsvalues);
-$optionstxtarray = explode('||', $optionstexte);
+    $genselect = '';
+    for ($i = 0; $i < count($optionsvalarray); $i++) {
+        $selected = $optionsvalarray[$i] == $conf_wert ? ' selected="selected"' : '';
+        $genselect .= "\t<option value=\"$optionsvalarray[$i]\"$selected>$optionstxtarray[$i]</option>\n";
+    }
 
-$genselect = '';
-for($i = 0; $i < count($optionsvalarray); $i++) {
-$selected = $optionsvalarray[$i] == $conf_wert ? ' selected="selected"' : '';
-$genselect .= "\t<option value=\"$optionsvalarray[$i]\"$selected>$optionstxtarray[$i]</option>\n";
-}
-
-return $genselect;
+    return $genselect;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 // Usercookie fuer Admin holen und testen
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-function passdatencheck() {
-global $scriptconf, $db;
+function passdatencheck()
+{
+    global $scriptconf, $db;
 
-$adusercook = isset($_COOKIE[$scriptconf['COOKPREFIX'].'admin']) && $_COOKIE[$scriptconf['COOKPREFIX'].'admin'] != '' ? $_COOKIE[$scriptconf['COOKPREFIX'].'admin'] : '';
+    $adusercook = isset($_COOKIE[$scriptconf['COOKPREFIX'].'admin']) && $_COOKIE[$scriptconf['COOKPREFIX'].'admin'] != '' ? $_COOKIE[$scriptconf['COOKPREFIX'].'admin'] : '';
 
-$un = '';
-$up = '';
+    $un = '';
+    $up = '';
 
-if ($adusercook != '') {
-$entpackt = pack("H*", $adusercook);
-$userarray = explode('#', $entpackt);
-$un 		= datensaver($userarray[0], 50, 5);
-$up 		= datensaver($userarray[1], 33, 6);
-}
-$gefunden = 0;
-if ($un != '' && $up != '') { 
-$memdatacount = $db->dbquery_first("SELECT COUNT(*) AS anzahl FROM ".$db->db_prefix."admin WHERE BINARY(username) = '".$un."' AND passwort = '".$up."'");
-$gefunden = $memdatacount['anzahl'] != '' ? 1 : 0;
-}
+    if ($adusercook != '') {
+        $entpackt = pack("H*", $adusercook);
+        $userarray = explode('#', $entpackt);
+        $un         = datensaver($userarray[0], 50, 5);
+        $up         = datensaver($userarray[1], 33, 6);
+    }
+    $gefunden = 0;
+    if ($un != '' && $up != '') { 
+        $memdatacount = $db->dbquery_first("SELECT COUNT(*) AS anzahl FROM ".$db->db_prefix."admin WHERE BINARY(username) = '".$un."' AND passwort = '".$up."'");
+        $gefunden = $memdatacount['anzahl'] != '' ? 1 : 0;
+    }
 
-if (!$gefunden) {
-redirect($scriptconf['ADMINURL'] .'/admin.php?err=3', 0, '');
-exit;
-} 
+    if (!$gefunden) {
+        redirect($scriptconf['ADMINURL'] .'/admin.php?err=3', 0, '');
+        exit;
+    } 
 }
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 // Mail senden
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-function textmail($empfaenger_name_email, $absender_name_email, $betreff, $messagetext, $empfaengeremail, $absenderemail) {
+function textmail($empfaenger_name_email, $absender_name_email, $betreff, $messagetext, $empfaengeremail, $absenderemail)
+{
+    $empfaenger_name_email     = datensaver($empfaenger_name_email, 200, 8);
+    $absender_name_email     = datensaver($absender_name_email, 200, 8);
+    $betreff                 = datensaver($betreff, 150, 8);
+    $messagetext             = datensaver($messagetext, 60000, 7);
+    $empfaengeremail         = datensaver($empfaengeremail, 100, 8);
+    $absenderemail             = datensaver($absenderemail, 100, 8);
 
-$empfaenger_name_email 	= datensaver($empfaenger_name_email, 200, 8);
-$absender_name_email 	= datensaver($absender_name_email, 200, 8);
-$betreff 				= datensaver($betreff, 150, 8);
-$messagetext 			= datensaver($messagetext, 60000, 7);
-$empfaengeremail 		= datensaver($empfaengeremail, 100, 8);
-$absenderemail 			= datensaver($absenderemail, 100, 8);
 
+    $headers = '';
+    $headers .= 'From:    '.$absender_name_email."\n";
+    $headers .= 'Reply-To: '.$absender_name_email."\n"; 
+    $headers .= 'X-Mailer: PHP'."\n";
+    $headers .= 'X-Sender: '.$absenderemail."\n";
+    $headers .= "Content-type: text/plain; charset=\"ISO-8859-1\"\n";
 
-$headers = '';
-$headers .= 'From:	'.$absender_name_email."\n";
-$headers .= 'Reply-To: '.$absender_name_email."\n"; 
-$headers .= 'X-Mailer: PHP'."\n";
-$headers .= 'X-Sender: '.$absenderemail."\n";
-$headers .= "Content-type: text/plain; charset=\"ISO-8859-1\"\n";
-
-// Versenden der Mail
-mail($empfaenger_name_email, $betreff, $messagetext, $headers);
+    // Versenden der Mail
+    mail($empfaenger_name_email, $betreff, $messagetext, $headers);
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 // Setupdaten neu schreiben
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-function rewrite_setup() { 
-global $db;
+function rewrite_setup()
+{ 
+    global $db;
 
-list($result, $gesamt, $alle) = $db->run_dbqueryanz("SELECT cname, cwert, art FROM ".$db->db_prefix."system", 0);
+    list($result, $gesamt, $alle) = $db->run_dbqueryanz("SELECT cname, cwert, art FROM ".$db->db_prefix."system", 0);
 
-$setupvars = '';
+    $setupvars = '';
 
-if ($gesamt > 0) {
-$start = 0;
-while ($row = $db->get_single_row($result)) {
-$start++;
-$komma = $start < $gesamt ? ',' : '';
-$setupvars .= '// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //'."\n";
-if ($row['art'] == 'S') {
-$setupvars .= "'".$row['cname']."' => '".$row['cwert']."'".$komma."\n";
-} elseif ($row['art'] == 'T') {
-$setupvars .= "'".$row['cname']. "' => '".addslashes($row['cwert'])."'".$komma."\n";
-} elseif ($row['art'] == 'Z') {
-$setupvars .= "'".$row['cname']. "' => '".$row['cwert']."'".$komma."\n";
-} 
-}
+    if ($gesamt > 0) {
+        $start = 0;
+        while ($row = $db->get_single_row($result)) {
+            $start++;
+            $komma = $start < $gesamt ? ',' : '';
+            $setupvars .= '// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //'."\n";
+            if ($row['art'] == 'S') {
+                $setupvars .= "'".$row['cname']."' => '".$row['cwert']."'".$komma."\n";
+            } elseif ($row['art'] == 'T') {
+                $setupvars .= "'".$row['cname']. "' => '".addslashes($row['cwert'])."'".$komma."\n";
+            } elseif ($row['art'] == 'Z') {
+                $setupvars .= "'".$row['cname']. "' => '".$row['cwert']."'".$komma."\n";
+            } 
+        }
 
-$fp = fopen("setup/setup.php","w") or fehlerausgabe ('Fehler', '<li>Kann Datei setup/setup.php nicht oeffnen', 1);
-fputs($fp, "<?php\n");
-fputs($fp, "// Zugriff ueber \$scriptconf['varname']\n");
-fputs($fp, "\$scriptconf = array(\n");
-fputs($fp, $setupvars);
-fputs($fp, '// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //'."\n");
-fputs($fp, ");\n");
-fputs($fp, "?>\n");
-fclose($fp);
-@chmod ("setup/setup.php", 0777);
-}
+        $fp = fopen("setup/setup.php", "w") or fehlerausgabe('Fehler', '<li>Kann Datei setup/setup.php nicht oeffnen', 1);
+        fputs($fp, "<?php\n");
+        fputs($fp, "// Zugriff ueber \$scriptconf['varname']\n");
+        fputs($fp, "\$scriptconf = array(\n");
+        fputs($fp, $setupvars);
+        fputs($fp, '// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //'."\n");
+        fputs($fp, ");\n");
+        fputs($fp, "?>\n");
+        fclose($fp);
+        @chmod("setup/setup.php", 0777);
+    }
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
@@ -182,64 +184,66 @@ fclose($fp);
 */
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 class template {
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Templatedaten holen fuer Templates ohne Ersatzvariablen
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-function get_tdata($tmplname, $no_replace = 0) {
-if(file_exists($tmplname)) {
-$this->template = implode('',file($tmplname));
-	if($no_replace) {
-	if (strstr($this->template, '<%%')) {
-	$this->entferne_platzhalter();
-	}
-	}
-return $this->template;
-} else {
-print_script_error(__LINE__,__FILE__,'Fehler!, Die Datei: '.$tmplname.' kann nicht ge&ouml;ffnet werden', '');
-exit;
-}
-}
+    /**
+     * Templatedaten holen fuer Templates ohne Ersatzvariablen
+     */
+    function get_tdata($tmplname, $no_replace = 0)
+    {
+        if (file_exists($tmplname)) {
+            $this->template = implode('', file($tmplname));
+            if ($no_replace) {
+                if (strstr($this->template, '<%%')) {
+                    $this->entferne_platzhalter();
+                }
+            }
+            return $this->template;
+        } else {
+            print_script_error(__LINE__, __FILE__, 'Fehler!, Die Datei: '.$tmplname.' kann nicht ge&ouml;ffnet werden', '');
+            exit;
+        }
+    }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Template als String fuer Parser holen
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-function get_tpldata($templatename) {
+    /**
+     * Template als String fuer Parser holen
+     */
+    function get_tpldata($templatename)
+    {
 
-if(file_exists($templatename)) {
-$this->template = implode('',file($templatename));
-} else {
-print_script_error(__LINE__,__FILE__,'Fehler!, Die Datei: '.$templatename.' kann nicht ge&ouml;ffnet werden', '');
-exit;
-}
-}
+        if (file_exists($templatename)) {
+            $this->template = implode('',file($templatename));
+        } else {
+            print_script_error(__LINE__,__FILE__,'Fehler!, Die Datei: '.$templatename.' kann nicht ge&ouml;ffnet werden', '');
+            exit;
+        }
+    }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Templateparser
-// $wertearray = Zu ersetztende Platzhalterdaten
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-function templateparser($wertearray) { 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    // Templateparser
+    // $wertearray = Zu ersetztende Platzhalterdaten
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    function templateparser($wertearray) { 
 
-if(is_array($wertearray)) {
-foreach($wertearray as $key => $value) { 
-$this->template = str_replace('<%%'.strtoupper($key).'%%>', $value, $this->template);
-} 
-}
+    if(is_array($wertearray)) {
+    foreach($wertearray as $key => $value) { 
+    $this->template = str_replace('<%%'.strtoupper($key).'%%>', $value, $this->template);
+    } 
+    }
 
-// Nicht ersetzte Platzhalter aus Template entfernen
-if (strstr($this->template, '<%%')) {
-$this->entferne_platzhalter();
-}
+    // Nicht ersetzte Platzhalter aus Template entfernen
+    if (strstr($this->template, '<%%')) {
+    $this->entferne_platzhalter();
+    }
 
-return $this->template; 
-}
+    return $this->template; 
+    }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Nicht ersetzte Platzhalter aus Template entfernen
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-function entferne_platzhalter() { 
-$this->template = preg_replace("/((<%%)(.+?)(%%>))/si", '', $this->template);
-}
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    // Nicht ersetzte Platzhalter aus Template entfernen
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    function entferne_platzhalter() { 
+    $this->template = preg_replace("/((<%%)(.+?)(%%>))/si", '', $this->template);
+    }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 } // Ende Templateclass
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
@@ -248,9 +252,9 @@ $this->template = preg_replace("/((<%%)(.+?)(%%>))/si", '', $this->template);
 // Radiobuttons und Auswahlfeldern entschaerfen
 // Aufruf:
 // $value = datensaver($mustertext, 400, 2);
-// $formdaten 	= Formulardaten
-// $maximal		= Maximale Eingabelaenge, bei Ueberschreitung kuerzen 
-// $type		= Numerischer Wert fuer Regexanweisung, wenn leer wird 1 angewendet
+// $formdaten     = Formulardaten
+// $maximal        = Maximale Eingabelaenge, bei Ueberschreitung kuerzen 
+// $type        = Numerischer Wert fuer Regexanweisung, wenn leer wird 1 angewendet
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 function datensaver($formdaten = '', $maximal = 255, $regextype = 1) {
 
@@ -289,13 +293,13 @@ $ersetze_mit = '';
 
 // nur Buchstaben, Zahlen, Bindestrich, Punkt, Slash und Leerzeichen erlauben
 elseif ($regextype == 4) {
-$suche_nach = '/[^0-9a-zA-ZÀ-Üà-üß,\.\-_ \/]/';                     
+$suche_nach = '/[^0-9a-zA-Zï¿½-ï¿½ï¿½-ï¿½ï¿½,\.\-_ \/]/';                     
 $ersetze_mit = '';
 }
 
 // nur Buchstaben und Zahlen mit Umlauten
 elseif ($regextype == 5) {
-$suche_nach = '/[^0-9a-zA-ZÀ-Üà-üß]/';                    
+$suche_nach = '/[^0-9a-zA-Zï¿½-ï¿½ï¿½-ï¿½ï¿½]/';                    
 $ersetze_mit = '';
 }
 
@@ -331,7 +335,7 @@ $formdaten = strtolower($formdaten);
 
 // Nur Text, kein HTML
 elseif ($regextype == 10) {
-$suche_nach = array ('/"/', '/\'/', '/[^0-9a-zA-ZÀ-Üà-üß\-_ \.\!\?,;:&=§%()@+# \n]/');                    
+$suche_nach = array ('/"/', '/\'/', '/[^0-9a-zA-Zï¿½-ï¿½ï¿½-ï¿½ï¿½\-_ \.\!\?,;:&=ï¿½%()@+# \n]/');                    
 $ersetze_mit = array ('&quot;', '&#39;', '');
 }
 
@@ -361,9 +365,9 @@ if (strlen($preis) > $max) {
 $preis = substr($preis, 0, $max);
 }
 
-$preis 			= preg_replace('/[^0-9,\.]/', '', trim($preis));
-$preis 			= preg_replace('/(,)/', '.', trim($preis));
-$preis 			= sprintf("%.2f", $preis);
+$preis             = preg_replace('/[^0-9,\.]/', '', trim($preis));
+$preis             = preg_replace('/(,)/', '.', trim($preis));
+$preis             = sprintf("%.2f", $preis);
 return $preis;
 }
 
@@ -394,15 +398,15 @@ return count($treffer);
 function get_uip() {
 
 if (getenv("HTTP_CLIENT_IP") && strcasecmp(getenv("HTTP_CLIENT_IP"), 'unknown')) {          
-	$uip = getenv("HTTP_CLIENT_IP");       
+    $uip = getenv("HTTP_CLIENT_IP");       
 } elseif (getenv("HTTP_X_FORWARDED_FOR") && strcasecmp(getenv("HTTP_X_FORWARDED_FOR"), 'unknown')) {          
-	$uip = getenv("HTTP_X_FORWARDED_FOR");       
+    $uip = getenv("HTTP_X_FORWARDED_FOR");       
 } elseif (getenv("REMOTE_ADDR") && strcasecmp(getenv("REMOTE_ADDR"), 'unknown')) {           
-	$uip = getenv("REMOTE_ADDR");       
+    $uip = getenv("REMOTE_ADDR");       
 } elseif (isset($_SERVER['REMOTE_ADDR']) && $_SERVER['REMOTE_ADDR'] && strcasecmp($_SERVER['REMOTE_ADDR'], 'unknown')) {          
-	$uip = $_SERVER['REMOTE_ADDR'];      
+    $uip = $_SERVER['REMOTE_ADDR'];      
 } else {           
-	$uip = 'unknown';   
+    $uip = 'unknown';   
 }
 
 return datensaver($uip, 25, 4);
@@ -427,9 +431,9 @@ $keyrandlength = mt_rand();
 }
 mt_srand();
 
-$keyarrayall     	= array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','Y','Z','a','b','c','d','e','f','g','h','j','k','m','n','p','q','r','s','t','u','v','w','y','z','1','2','3','4','5','6','7','8','9');
-$keyarraycha     	= array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','Y','Z'); 
-$keyarraynum     	= array('1','2','3','4','5','6','7','8','9'); 
+$keyarrayall         = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','Y','Z','a','b','c','d','e','f','g','h','j','k','m','n','p','q','r','s','t','u','v','w','y','z','1','2','3','4','5','6','7','8','9');
+$keyarraycha         = array('A','B','C','D','E','F','G','H','I','J','K','L','M','N','O','P','Q','R','S','T','U','V','W','Y','Z'); 
+$keyarraynum         = array('1','2','3','4','5','6','7','8','9'); 
 
 // Welches Array von Zeichen nutzen? 
 // 1 = Buchstaben und Zahlen
@@ -583,25 +587,25 @@ settype ($groesse, 'integer');
 
 if ($groesse) {
 
-	if($groesse > 1099511627776){
-	return number_format($groesse/1099511627776, 2, ",", ".")." TB";
-	}
-	
-	elseif ($groesse > 1073741824){
-	return number_format($groesse/1073741824, 2, ",", ".")." GB";
-	}
-	
-	elseif ($groesse > 1048576){
-	return number_format($groesse/1048576, 2, ",", ".")." MB";
-	}
-	
-	elseif ($groesse >= 1024){
-	return number_format($groesse/1024, 0, ",", ".")." KB";
-	}
-	
-	else {
-	return $groesse ." Bytes";
-	}
+    if($groesse > 1099511627776){
+    return number_format($groesse/1099511627776, 2, ",", ".")." TB";
+    }
+    
+    elseif ($groesse > 1073741824){
+    return number_format($groesse/1073741824, 2, ",", ".")." GB";
+    }
+    
+    elseif ($groesse > 1048576){
+    return number_format($groesse/1048576, 2, ",", ".")." MB";
+    }
+    
+    elseif ($groesse >= 1024){
+    return number_format($groesse/1024, 0, ",", ".")." KB";
+    }
+    
+    else {
+    return $groesse ." Bytes";
+    }
 
 } else {
 return "Nicht ermittelbar";
@@ -640,7 +644,7 @@ $seitenlink = "";
 if ($gesamtseiten > 1) {
 $prevbl = $aktuelle_seite > 1 ? $aktuelle_seite - 1 : 1;
 $nohrefpr = $aktuelle_seite == 1 ? 'no' : '';
-$seitenlink .=  "\t<td class=\"pl\"><a ".$nohrefpr."href=\"".$url."=1\" title=\"Erste Seite aufrufen\">&#171; &#171;</a></td>\n\t<td class=\"pl\"><a ".$nohrefpr."href=\"".$url."=".$prevbl."\" title=\"Eine Seite zurück\">&#171;</a></td>\n";
+$seitenlink .=  "\t<td class=\"pl\"><a ".$nohrefpr."href=\"".$url."=1\" title=\"Erste Seite aufrufen\">&#171; &#171;</a></td>\n\t<td class=\"pl\"><a ".$nohrefpr."href=\"".$url."=".$prevbl."\" title=\"Eine Seite zurï¿½ck\">&#171;</a></td>\n";
 }
 
 for ($i = $startback; $i <= $letzte; $i++) {
@@ -716,9 +720,9 @@ body, html { background-color: #F5F6F8; font-family: Verdana, Arial, sans-serif;
 </table>
 </div>
 </body>
-</html>	
+</html>    
 <?php
-exit;	
+exit;    
 }
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 ?>
