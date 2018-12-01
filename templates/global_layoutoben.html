@@ -1,41 +1,31 @@
-<div id="inhalt">
 <!-- HEADERBEREICH ANFANG -->
-<table cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 5px;">
-<tr>
-<td id="topsmall"></td>
-</tr>
-<tr>
-<td id="topbanner"><div align="center"><img src="templates/images/logo.png" alt="" width="591" height="70" border="0"></div></td>
-</tr>
-<tr>
-    <td id="menuetopline"></td>
-</tr>
-<tr>
-    <td id="topmenue">
-	<a href="./">Bild hochladen</a>
-	<a href="./service.php?go=dp">Bild l&ouml;schen</a>
-	<a href="./service.php?go=st">Statistiken</a>
-	<a href="./service.php?go=agb">AGB/Regeln</a>
-	<a href="./service.php?go=imp">Impressum/Kontakt</a>
-	<a href="./service.php?go=help">Hilfe/FAQ</a>
-	</td>
-</tr>
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+	<a class="navbar-brand" href="#">Imgupload</a>
+	<button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+		<span class="navbar-toggler-icon"></span>
+	</button>
 
-<tr>
-    <td id="menuebottomline"></td>
-</tr>
-</table>
+	<div class="collapse navbar-collapse" id="navbarSupportedContent">
+		<ul class="navbar-nav mr-auto">
+			<li class="nav-item"><a class="nav-link" href="./"><i class="fas fa-upload"></i>&nbsp;Upload</a></li>
+			<li class="nav-item"><a class="nav-link" href="./service.php?go=dp"><i class="fas fa-lg fa-trash-alt"></i>&nbsp;Bild l&ouml;schen</a></li>
+			<li class="nav-item"><a class="nav-link" href="./service.php?go=st"><i class="fas fa-lg fa-chart-line"></i>&nbsp;Statistiken</a></li>
+			<li class="nav-item"><a class="nav-link" href="./service.php?go=agb"><i class="fas fa-lg fa-gavel"></i>&nbsp;AGB/Regeln</a></li>
+			<li class="nav-item"><a class="nav-link" href="./service.php?go=imp"><i class="fas fa-lg fa-readme"></i>&nbsp;Impressum/Kontakt</a></li>
+			<li class="nav-item"><a class="nav-link" href="./service.php?go=help"><i class="fas fa-lg fa-question"></i>&nbsp;Hilfe/FAQ</a></li>
+		</ul>
+	</div>
+</nav>
 <!-- HEADERBEREICH ENDE -->
 
 <!-- ########################################################### -->
 
 <!-- CONTENTBEREICH ANFANG -->
-
-<table cellspacing="0" cellpadding="0" border="0" width="100%" style="margin-bottom: 5px;">
-<tr>
-	<td id="contenttop" width="100%"><b>&raquo;</b> <%%SEITENTITEL%%></td>
-</tr>
-<tr>
-	<td id="content">
-<!-- ######################################################################################### -->
-<!-- CONTENTBEREICH ANFANG -->	
+<div class="container-fluid" style="margin-top:50px">
+	<div class="row justify-content-md-center">
+		<div class="col-sm-12 col-md-6">
+			<div class="card">
+				<div class="card-header">
+					<%%SEITENTITEL%%>
+				</div>
+				<div class="card-body">

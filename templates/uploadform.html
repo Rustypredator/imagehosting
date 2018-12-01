@@ -1,24 +1,9 @@
-
-<div align="center"><br>
-<table width="80%" cellspacing="0" cellpadding="5" border="0" class="tbinnen">
-<tr>
-    <td align="center" width="60%"><img src="templates/images/upload.png" alt="" style="padding: 5px 20px 5px 20px;" width="373" height="24" border="0"></td>
-    <td align="center" width="40%" class="tbinnenh2"><img src="templates/images/uploadinfo.png" alt="" style="padding: 5px 20px 5px 20px;" width="166" height="23" border="0"></td>
-</tr>
-<tr>
-    <td valign="top" class="tbinnenw" align="center">
-    <br><br>
-	<input class="mb" style="width: 250px;" size="25" type="file" name="UPFILE[]" onChange="check_endung(this.value)">
-	<br><br>
-	<input class="los" type="Submit" value="Datei hochladen" onClick="return uptest();"></td>
-    <td valign="top" class="tbinnenh2" style="padding: 5px;">
-	<%%UPLOADINFO%%>
-	
-	</td>
-</tr>
-</table>
-</form>
-<br>
+<div class="row">
+    <div class="col-sm-12 col-md-8">
+        <input class="form-control-file" type="file" name="UPFILE[]" onChange="check_endung(this.value)"><br/>
+        <input class="btn btn-success" type="Submit" value="Datei hochladen" onClick="return uptest();"></td>
+    </div>
+    <div class="col-sm-12 col-md-4">
+        <%%UPLOADINFO%%>
+    </div>
 </div>
-
-

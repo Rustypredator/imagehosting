@@ -1,11 +1,41 @@
-<%%BILDHTML%%>
-
-<table cellspacing="2" cellpadding="0" border="0" class="tbinnen" width="100%">
-<tr>
-    <td class="tbinnend"><b>Statistiken zum Bild</b></td>
-</tr>
-<tr>
-	<td class="tbinnenw"><%%BILDSTAT%%></td>
-</tr>
+<h2>Bild:</h2>
+<div class="row justify-content-md-center">
+    <img class="img-fluid" src="<%%BILDURL%%>" alt="<%%BILDSTAT_UPLOADNAME%%>"/>
+</div>
+<div class="row justify-content-md-center">
+    <a class="btn btn-primary btn-lg" href="<%%BILDURL%%>" role="button">->> Volle Größe <<-</a>
+</div>
+<br/>
+<h2>Statistiken zum Bild:</h2>
+<table class="table table-striped table-condensed table-hover">
+    <tbody>
+        <tr>
+            <td>Hochgeladen am</td>
+            <td>
+                <%%BILDSTAT_UPLOAD%%>
+            </td>
+        </tr>
+        <tr>
+            <td>Hochgeladen mit dem Namen</td>
+            <td><%%BILDSTAT_UPLOADNAME%%></td>
+        </tr>
+        <tr>
+            <td>Aufrufe des Bildes</td>
+            <td>
+                <%%BILDSTAT_VISITS%%>
+            </td>
+        </tr>
+        <tr>
+            <td>Traffic dieses Bildes</td>
+            <td>
+                <%%BILDSTAT_TRAFFIC%%>
+            </td>
+        </tr>
+        <tr>
+            <td>Dateigröße dieses Bildes</td>
+            <td>
+                <%%BILDSTAT_SIZE%%>
+            </td>
+        </tr>
+    </tbody>
 </table>
-
