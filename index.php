@@ -58,9 +58,11 @@ default:
     break;
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Bildupload
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+/**
+ * Bildupload
+ *
+ * @return void
+ */
 function start()
 {
     global $scriptconf, $db, $tparse;
@@ -162,9 +164,12 @@ function start()
 
     echo globaler_footer();
 }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Upload ausfuehren
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+/**
+ * Upload ausfuehren
+ *
+ * @return void
+ */
 function picup()
 {
     global $scriptconf, $db, $tparse;
@@ -285,9 +290,11 @@ function picup()
     exit;
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Info nach Bildupload
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+/**
+ * Info nach Bildupload
+ *
+ * @return void
+ */
 function info()
 {
     global $scriptconf, $db, $tparse;
@@ -316,8 +323,8 @@ function info()
         }
 
         $contentarray1 = [
-        'TEXTTOP'      => '<b>Fehler beim Bildupload</b>',
-        'TEXTCONT'     => '<ol>'.$user_error_info.'</ol>',
+            'TEXTTOP'      => '<b>Fehler beim Bildupload</b>',
+            'TEXTCONT'     => '<ol>'.$user_error_info.'</ol>',
         ];
 
         $tparse->get_tpldata(WEB_PFAD.'templates/textausgaben.html');
@@ -381,9 +388,21 @@ function info()
     } // else $gesamterr
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Bildergroesse anpassen
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+/**
+ * Bildergroesse anpassen
+ *
+ * @param string  $startverzeichnis TODO: Beschreibung
+ * @param string  $dateizielvz      TODO: Beschreibung
+ * @param string  $tempname         TODO: Beschreibung
+ * @param string  $savename         TODO: Beschreibung
+ * @param string  $endung           TODO: Beschreibung
+ * @param integer $maxbreite        TODO: Beschreibung
+ * @param integer $maxhoehe         TODO: Beschreibung
+ * @param integer $width            TODO: Beschreibung
+ * @param integer $height           TODO: Beschreibung
+ * 
+ * @return void
+ */
 function picconverter($startverzeichnis, $dateizielvz, $tempname, $savename, $endung, $maxbreite, $maxhoehe, $width, $height)
 {
 
@@ -462,9 +481,14 @@ function picconverter($startverzeichnis, $dateizielvz, $tempname, $savename, $en
     // ################################################################ //
     return [$breite, $hoehe, $newfilesize];
 }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Wartungsfunktionen
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+/**
+ * Wartungsfunktionen
+ *
+ * @param [type] $aktuellerdatum TODO: Beschreibung
+ * 
+ * @return void
+ */
 function run_wartung($aktuellerdatum)
 {
     global $scriptconf, $db;

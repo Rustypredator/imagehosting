@@ -64,9 +64,11 @@ default:
     break;
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// AGB/Regeln
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+/**
+ * AGB/Regeln
+ *
+ * @return void
+ */
 function agb()
 {
     global $scriptconf, $db, $tparse;
@@ -79,9 +81,12 @@ function agb()
 
     echo globaler_footer();
 }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Bild loeschen
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+/**
+ * Bild loeschen
+ *
+ * @return void
+ */
 function dp()
 {
     global $scriptconf, $db, $tparse;
@@ -97,9 +102,12 @@ function dp()
 
     echo globaler_footer();
 }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Bild loeschen ausfuehren
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+/**
+ * Bild loeschen ausfuehren
+ *
+ * @return void
+ */
 function dpdel()
 {
     global $scriptconf, $db, $tparse;
@@ -142,9 +150,12 @@ function dpdel()
         exit;
     }
 }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Impressum/Kontakt
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+/**
+ * Impressum/Kontakt
+ *
+ * @return void
+ */
 function imp()
 {
     global $scriptconf, $db, $tparse;
@@ -157,9 +168,12 @@ function imp()
 
     echo globaler_footer();
 }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Hilfe/FAQ
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+/**
+ * Hilfe/FAQ
+ *
+ * @return void
+ */
 function help()
 {
     global $scriptconf, $db, $tparse;
@@ -172,9 +186,12 @@ function help()
 
     echo globaler_footer();
 }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Statistik
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+/**
+ * Statistik
+ *
+ * @return void
+ */
 function st()
 {
     global $scriptconf, $db, $tparse;
@@ -201,4 +218,3 @@ function st()
 
     echo globaler_footer();
 }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
