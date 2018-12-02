@@ -59,7 +59,7 @@ default:
 }
 
 /**
- * Bildupload
+ * Bildupload.
  *
  * @return void
  */
@@ -166,7 +166,7 @@ function start()
 }
 
 /**
- * Upload ausfuehren
+ * Upload ausfuehren.
  *
  * @return void
  */
@@ -291,7 +291,7 @@ function picup()
 }
 
 /**
- * Info nach Bildupload
+ * Info nach Bildupload.
  *
  * @return void
  */
@@ -389,18 +389,18 @@ function info()
 }
 
 /**
- * Bildergroesse anpassen
+ * Bildergroesse anpassen.
  *
- * @param string  $startverzeichnis TODO: Beschreibung
- * @param string  $dateizielvz      TODO: Beschreibung
- * @param string  $tempname         TODO: Beschreibung
- * @param string  $savename         TODO: Beschreibung
- * @param string  $endung           TODO: Beschreibung
- * @param integer $maxbreite        TODO: Beschreibung
- * @param integer $maxhoehe         TODO: Beschreibung
- * @param integer $width            TODO: Beschreibung
- * @param integer $height           TODO: Beschreibung
- * 
+ * @param string $startverzeichnis TODO: Beschreibung
+ * @param string $dateizielvz      TODO: Beschreibung
+ * @param string $tempname         TODO: Beschreibung
+ * @param string $savename         TODO: Beschreibung
+ * @param string $endung           TODO: Beschreibung
+ * @param int    $maxbreite        TODO: Beschreibung
+ * @param int    $maxhoehe         TODO: Beschreibung
+ * @param int    $width            TODO: Beschreibung
+ * @param int    $height           TODO: Beschreibung
+ *
  * @return void
  */
 function picconverter($startverzeichnis, $dateizielvz, $tempname, $savename, $endung, $maxbreite, $maxhoehe, $width, $height)
@@ -483,10 +483,10 @@ function picconverter($startverzeichnis, $dateizielvz, $tempname, $savename, $en
 }
 
 /**
- * Wartungsfunktionen
+ * Wartungsfunktionen.
  *
  * @param [type] $aktuellerdatum TODO: Beschreibung
- * 
+ *
  * @return void
  */
 function run_wartung($aktuellerdatum)

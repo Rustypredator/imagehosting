@@ -1,5 +1,13 @@
 <?php
 
+/*
+ * Imagehosting-Script by inspire-World.de
+ * Rework by Rustypredator <contact@rusty.info>
+ *
+ * Original Project: http://inspire-world.de/phpscripte13.php
+ * Reworked Project: https://github.com/Rustypredator/imagehosting
+ */
+
 error_reporting(E_ALL & ~E_NOTICE);
 
 define('SCRIPTSECURE', 1);
@@ -65,7 +73,7 @@ default:
 }
 
 /**
- * AGB/Regeln
+ * AGB/Regeln.
  *
  * @return void
  */
@@ -83,7 +91,7 @@ function agb()
 }
 
 /**
- * Bild loeschen
+ * Bild loeschen.
  *
  * @return void
  */
@@ -104,7 +112,7 @@ function dp()
 }
 
 /**
- * Bild loeschen ausfuehren
+ * Bild loeschen ausfuehren.
  *
  * @return void
  */
@@ -152,7 +160,7 @@ function dpdel()
 }
 
 /**
- * Impressum/Kontakt
+ * Impressum/Kontakt.
  *
  * @return void
  */
@@ -170,7 +178,7 @@ function imp()
 }
 
 /**
- * Hilfe/FAQ
+ * Hilfe/FAQ.
  *
  * @return void
  */
@@ -188,7 +196,7 @@ function help()
 }
 
 /**
- * Statistik
+ * Statistik.
  *
  * @return void
  */
