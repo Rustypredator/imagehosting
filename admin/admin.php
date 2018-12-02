@@ -75,9 +75,13 @@ default:
     break;
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Logindateneingabe Formular
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+/**
+ * Logindateneingabe Formular
+ *
+ * @param string $loginerr TODO: Beschreibung
+ * 
+ * @return void
+ */
 function login($loginerr = '')
 {
     global $scriptconf, $db, $tparse;
@@ -146,9 +150,11 @@ function login($loginerr = '')
     echo globaler_footer(1);
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Logindaten checken und Cookie setzen, oder zurueck zum Login
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+/**
+ * Logindaten checken und Cookie setzen, oder zurueck zum Login
+ *
+ * @return void
+ */
 function logincheck()
 {
     global $scriptconf, $db;
@@ -205,9 +211,11 @@ function logincheck()
     }
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Startseite der Administration
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+/**
+ * Startseite der Administration
+ *
+ * @return void
+ */
 function startseite()
 {
     global $scriptconf, $db, $tparse;
@@ -266,9 +274,11 @@ function startseite()
     echo globaler_footer();
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Systemdaten
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+/**
+ * Systemdaten
+ *
+ * @return void
+ */
 function systemdaten()
 {
     global $scriptconf, $db, $tparse;
@@ -307,9 +317,11 @@ function systemdaten()
     echo globaler_footer();
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Systemdaten speichern
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+/**
+ * Systemdaten speichern
+ *
+ * @return void
+ */
 function systemdatensave()
 {
     global $scriptconf,$db;
@@ -422,9 +434,11 @@ function systemdatensave()
     exit;
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Admindaten
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+/**
+ * Admindaten
+ *
+ * @return void
+ */
 function admindaten()
 {
     global $scriptconf, $db;
@@ -473,9 +487,11 @@ function admindaten()
     echo globaler_footer();
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Neue Admindaten speichern
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+/**
+ * Neue Admindaten speichern
+ *
+ * @return void
+ */
 function newadmindatensave()
 {
     global $scriptconf, $db;
@@ -611,9 +627,11 @@ function newadmindatensave()
     exit;
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Ausloggen
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+/**
+ * Ausloggen
+ *
+ * @return void
+ */
 function logout()
 {
     global $scriptconf;
@@ -624,9 +642,11 @@ function logout()
     exit;
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Adminlog
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+/**
+ * Adminlog
+ *
+ * @return void
+ */
 function adminlog()
 {
     passdatencheck();
@@ -709,9 +729,12 @@ function adminlog()
     // Seitenfooter fuer alle Seiten
     echo globaler_footer();
 }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Adminlog leeren
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+/**
+ * Adminlog leeren
+ *
+ * @return void
+ */
 function adminlogdel()
 {
     passdatencheck();
@@ -723,9 +746,11 @@ function adminlogdel()
     exit;
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// PHP Infos
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+/**
+ * PHP Infos
+ *
+ * @return void
+ */
 function info()
 {
     global $scriptconf;
@@ -749,8 +774,3 @@ function info()
     // Seitenfooter fuer alle Seiten
     echo globaler_footer();
 }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-
-?>
-
-

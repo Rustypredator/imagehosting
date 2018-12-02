@@ -64,9 +64,11 @@ default:
     break;
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Alle Bilder auflisten
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+/**
+ * Alle Bilder auflisten
+ *
+ * @return void
+ */
 function liste()
 {
     global $scriptconf, $db;
@@ -86,13 +88,15 @@ function liste()
     // Eintraege pro Seite
     $anz = ($los - 1) * $per_page;
 
-    list($result, $gesamt, $alle) = $db->run_dbqueryanz("SELECT SQL_CALC_FOUND_ROWS a.up_id, a.up_picname, a.up_orginalname, a.up_endung, a.up_vz, a.up_bytesize, a.up_width, a.up_height, a.up_thumb, a.up_thumbwidth, a.up_thumbheight, a.up_thumbbytesize, DATE_FORMAT(a.up_datetime, '%d.%m.%Y %T') AS uploaddate, a.up_ip, a.up_delkey,
-b.traffic_id, COUNT(b.bild_id) AS aufrufe, b.traffic_picname, b.traffic_thpicname, SUM(b.traffic_bytes + b.traffic_thbytes) AS gesamttr, b.trafic_art
-FROM ".$db->db_prefix.'uploads a
-LEFT JOIN '.$db->db_prefix."trafficlog b
-ON(a.up_id = b.bild_id)
-GROUP BY a.up_id 
-ORDER BY a.up_id DESC LIMIT $anz, $per_page", 1);
+    list($result, $gesamt, $alle) = $db->run_dbqueryanz(
+        "SELECT SQL_CALC_FOUND_ROWS a.up_id, a.up_picname, a.up_orginalname, a.up_endung, a.up_vz, a.up_bytesize, a.up_width, a.up_height, a.up_thumb, a.up_thumbwidth, a.up_thumbheight, a.up_thumbbytesize, DATE_FORMAT(a.up_datetime, '%d.%m.%Y %T') AS uploaddate, a.up_ip, a.up_delkey,
+        b.traffic_id, COUNT(b.bild_id) AS aufrufe, b.traffic_picname, b.traffic_thpicname, SUM(b.traffic_bytes + b.traffic_thbytes) AS gesamttr, b.trafic_art
+        FROM ".$db->db_prefix.'uploads a
+        LEFT JOIN '.$db->db_prefix."trafficlog b
+        ON(a.up_id = b.bild_id)
+        GROUP BY a.up_id 
+        ORDER BY a.up_id DESC LIMIT $anz, $per_page", 1
+    );
 
     //traffic_id, bild_id, traffic_picname, traffic_thpicname, traffic_bytes, traffic_thbytes, trafic_art, traffic_datetime, traffic_ip
 
@@ -113,65 +117,54 @@ ORDER BY a.up_id DESC LIMIT $anz, $per_page", 1);
             $bildinfos = '<div align="left" class="innenhd">Upload am: '.$picdata['uploaddate'].'<br>Aufrufe: '.$picdata['aufrufe'].'<br>Traffic: '.dateigroesse($picdata['gesamttr']).'<br>Abmessungen: '.$picdata['up_width'].' x '.$picdata['up_height'].'<br>Dateigr&ouml;&szlig;e: '.dateigroesse($picdata['up_bytesize']).'<br><a href="'.SCRIPTNAME.'?go=dp&amp;id='.$picdata['up_id'].'&amp;los='.$los.'&amp;back=liste">Bild sofort l&ouml;schen?</a></div>';
 
             if ($stt == 1) {
-                $output .= '<tr>
-	<td class="innenh" width="33%" align="center">'.$thumbnail_img.$bildinfos.'</td>
-';
+                $output .= '<tr><td class="innenh" width="33%" align="center">'.$thumbnail_img.$bildinfos.'</td>';
             } elseif ($stt == 2) {
-                $output .= '
-	<td class="innenh" width="34%" align="center">'.$thumbnail_img.$bildinfos.'</td>
-';
+                $output .= '<td class="innenh" width="34%" align="center">'.$thumbnail_img.$bildinfos.'</td>';
             } elseif ($stt == 3) {
-                $output .= '
-	<td class="innenh" width="33%" align="center">'.$thumbnail_img.$bildinfos.'</td>
-</tr>
-';
+                $output .= '<td class="innenh" width="33%" align="center">'.$thumbnail_img.$bildinfos.'</td></tr>';
                 $stt = 0;
             }
         }
 
         //####################
         if ($stt == 1) {
-            $output .= '	<td class="innenh">&nbsp;</td>
-	<td class="innenh">&nbsp;</td>
-</tr>
-';
+            $output .= '<td class="innenh">&nbsp;</td><td class="innenh">&nbsp;</td></tr>';
         }
 
         if ($stt == 2) {
-            $output .= '	<td class="innenh">&nbsp;</td>
-</tr>
-';
+            $output .= '<td class="innenh">&nbsp;</td></tr>';
         }
 
         //####################
     } else {
-        $output = '<tr>
-	<td class="innenh" colspan="3" align="center"><span class="tippred">Es sind noch keine Eintr&auml;ge vorhanden</span></td>
-</tr>';
+        $output = '<tr><td class="innenh" colspan="3" align="center"><span class="tippred">Es sind noch keine Eintr&auml;ge vorhanden</span></td></tr>';
     } ?>
 
-<table width="100%" cellspacing="1" cellpadding="0" border="0" class="innen">
-<?php echo trl(3); ?>
-<tr>
-	<td class="innenhd" colspan="3"><?php echo $alle; ?> Bilder sind derzeit in der Datenbank gespeichert</td>
-</tr>
-<tr>
-	<td class="innenh" colspan="3" align="right"><?php echo $navilinks; ?></td>
-</tr>
-<?php echo $output; ?>
-<tr>
-	<td class="innenh" colspan="3" align="right"><?php echo $navilinks; ?></td>
-</tr>
-<?php echo trl(3); ?>
-</table>
+    <table width="100%" cellspacing="1" cellpadding="0" border="0" class="innen">
+    <?php echo trl(3); ?>
+    <tr>
+        <td class="innenhd" colspan="3"><?php echo $alle; ?> Bilder sind derzeit in der Datenbank gespeichert</td>
+    </tr>
+    <tr>
+        <td class="innenh" colspan="3" align="right"><?php echo $navilinks; ?></td>
+    </tr>
+    <?php echo $output; ?>
+    <tr>
+        <td class="innenh" colspan="3" align="right"><?php echo $navilinks; ?></td>
+    </tr>
+    <?php echo trl(3); ?>
+    </table>
 
-<?php
-// Seitenfooter fuer alle Seiten
-echo globaler_footer();
+    <?php
+    // Seitenfooter fuer alle Seiten
+    echo globaler_footer();
 }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Neue Bilder der letzten 24 Stunden auflisten
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+/**
+ * Neue Bilder der letzten 24 Stunden auflisten
+ *
+ * @return void
+ */
 function neue()
 {
     global $scriptconf, $db;
@@ -191,14 +184,16 @@ function neue()
     // Eintraege pro Seite
     $anz = ($los - 1) * $per_page;
 
-    list($result, $gesamt, $alle) = $db->run_dbqueryanz("SELECT SQL_CALC_FOUND_ROWS a.up_id, a.up_picname, a.up_orginalname, a.up_endung, a.up_vz, a.up_bytesize, a.up_width, a.up_height, a.up_thumb, a.up_thumbwidth, a.up_thumbheight, a.up_thumbbytesize, DATE_FORMAT(a.up_datetime, '%d.%m.%Y %T') AS uploaddate, a.up_ip, a.up_delkey,
-b.traffic_id, COUNT(b.bild_id) AS aufrufe, b.traffic_picname, b.traffic_thpicname, SUM(b.traffic_bytes + b.traffic_thbytes) AS gesamttr, b.trafic_art
-FROM ".$db->db_prefix.'uploads a
-LEFT JOIN '.$db->db_prefix."trafficlog b
-ON(a.up_id = b.bild_id)
-WHERE UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(a.up_datetime) < 86400  
-GROUP BY a.up_id 
-ORDER BY a.up_id DESC LIMIT $anz, $per_page", 1);
+    list($result, $gesamt, $alle) = $db->run_dbqueryanz(
+        "SELECT SQL_CALC_FOUND_ROWS a.up_id, a.up_picname, a.up_orginalname, a.up_endung, a.up_vz, a.up_bytesize, a.up_width, a.up_height, a.up_thumb, a.up_thumbwidth, a.up_thumbheight, a.up_thumbbytesize, DATE_FORMAT(a.up_datetime, '%d.%m.%Y %T') AS uploaddate, a.up_ip, a.up_delkey,
+        b.traffic_id, COUNT(b.bild_id) AS aufrufe, b.traffic_picname, b.traffic_thpicname, SUM(b.traffic_bytes + b.traffic_thbytes) AS gesamttr, b.trafic_art
+        FROM ".$db->db_prefix.'uploads a
+        LEFT JOIN '.$db->db_prefix."trafficlog b
+        ON(a.up_id = b.bild_id)
+        WHERE UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(a.up_datetime) < 86400  
+        GROUP BY a.up_id 
+        ORDER BY a.up_id DESC LIMIT $anz, $per_page", 1
+    );
 
     //traffic_id, bild_id, traffic_picname, traffic_thpicname, traffic_bytes, traffic_thbytes, trafic_art, traffic_datetime, traffic_ip
 
@@ -219,65 +214,54 @@ ORDER BY a.up_id DESC LIMIT $anz, $per_page", 1);
             $bildinfos = '<div align="left" class="innenhd">Upload am: '.$picdata['uploaddate'].'<br>Aufrufe: '.$picdata['aufrufe'].'<br>Traffic: '.dateigroesse($picdata['gesamttr']).'<br>Abmessungen: '.$picdata['up_width'].' x '.$picdata['up_height'].'<br>Dateigr&ouml;&szlig;e: '.dateigroesse($picdata['up_bytesize']).'<br><a href="'.SCRIPTNAME.'?go=dp&amp;id='.$picdata['up_id'].'&amp;los='.$los.'&amp;back=neue">Bild sofort l&ouml;schen?</a></div>';
 
             if ($stt == 1) {
-                $output .= '<tr>
-	<td class="innenh" width="33%" align="center">'.$thumbnail_img.$bildinfos.'</td>
-';
+                $output .= '<tr><td class="innenh" width="33%" align="center">'.$thumbnail_img.$bildinfos.'</td>';
             } elseif ($stt == 2) {
-                $output .= '
-	<td class="innenh" width="34%" align="center">'.$thumbnail_img.$bildinfos.'</td>
-';
+                $output .= '<td class="innenh" width="34%" align="center">'.$thumbnail_img.$bildinfos.'</td>';
             } elseif ($stt == 3) {
-                $output .= '
-	<td class="innenh" width="33%" align="center">'.$thumbnail_img.$bildinfos.'</td>
-</tr>
-';
+                $output .= '<td class="innenh" width="33%" align="center">'.$thumbnail_img.$bildinfos.'</td></tr>';
                 $stt = 0;
             }
         }
 
         //####################
         if ($stt == 1) {
-            $output .= '	<td class="innenh">&nbsp;</td>
-	<td class="innenh">&nbsp;</td>
-</tr>
-';
+            $output .= '<td class="innenh">&nbsp;</td><td class="innenh">&nbsp;</td></tr>';
         }
 
         if ($stt == 2) {
-            $output .= '	<td class="innenh">&nbsp;</td>
-</tr>
-';
+            $output .= '<td class="innenh">&nbsp;</td></tr>';
         }
 
         //####################
     } else {
-        $output = '<tr>
-	<td class="innenh" colspan="3" align="center"><span class="tippred">Es sind noch keine Eintr&auml;ge vorhanden</span></td>
-</tr>';
+        $output = '<tr><td class="innenh" colspan="3" align="center"><span class="tippred">Es sind noch keine Eintr&auml;ge vorhanden</span></td></tr>';
     } ?>
 
-<table width="100%" cellspacing="1" cellpadding="0" border="0" class="innen">
-<?php echo trl(3); ?>
-<tr>
-	<td class="innenhd" colspan="3"><?php echo $alle; ?> Bilder die in den letzten 24 Stunden hochgeladen wurden sind derzeit in der Datenbank gespeichert</td>
-</tr>
-<tr>
-	<td class="innenh" colspan="3" align="right"><?php echo $navilinks; ?></td>
-</tr>
-<?php echo $output; ?>
-<tr>
-	<td class="innenh" colspan="3" align="right"><?php echo $navilinks; ?></td>
-</tr>
-<?php echo trl(3); ?>
-</table>
+    <table width="100%" cellspacing="1" cellpadding="0" border="0" class="innen">
+    <?php echo trl(3); ?>
+    <tr>
+        <td class="innenhd" colspan="3"><?php echo $alle; ?> Bilder die in den letzten 24 Stunden hochgeladen wurden sind derzeit in der Datenbank gespeichert</td>
+    </tr>
+    <tr>
+        <td class="innenh" colspan="3" align="right"><?php echo $navilinks; ?></td>
+    </tr>
+    <?php echo $output; ?>
+    <tr>
+        <td class="innenh" colspan="3" align="right"><?php echo $navilinks; ?></td>
+    </tr>
+    <?php echo trl(3); ?>
+    </table>
 
-<?php
-// Seitenfooter fuer alle Seiten
-echo globaler_footer();
+    <?php
+    // Seitenfooter fuer alle Seiten
+    echo globaler_footer();
 }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Bild loeschen ausfuehren
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+/**
+ * Bild loeschen ausfuehren
+ *
+ * @return void
+ */
 function dp()
 {
     global $scriptconf, $db;
@@ -320,9 +304,12 @@ function dp()
     redirect($scriptconf['ADMINURL'].'/'.SCRIPTNAME.'?go='.$back.'&amp;los='.$los, 1, 'Bild gel&ouml;scht...');
     exit;
 }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Alte Bilder loeschen
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+/**
+ * Alte Bilder loeschen
+ *
+ * @return void
+ */
 function op()
 {
     global $scriptconf, $db;
@@ -347,29 +334,31 @@ function op()
     echo '<input type="hidden" name="go" value="opdel">'."\n";
     echo '<input type="hidden" name="ba" value="'.$anz.'">'."\n"; ?>
 
-<table width="100%" cellspacing="1" cellpadding="0" border="0" class="innen">
-<?php echo trl(2); ?>
-<tr>
-    <td class="innend"><b>Bilder l&ouml;schen die &auml;lter als <?php echo $scriptconf['PICDELETE']; ?> Tage sind</b></td>
-</tr>
-<tr>
-    <td class="innenh"><?php echo $info; ?></td>
-</tr>
-<tr>
-    <td class="innend" align="center"><?php echo $button; ?></td>
-</tr>
-<?php echo trl(2); ?>
-</table>
-</form>
+    <table width="100%" cellspacing="1" cellpadding="0" border="0" class="innen">
+    <?php echo trl(2); ?>
+    <tr>
+        <td class="innend"><b>Bilder l&ouml;schen die &auml;lter als <?php echo $scriptconf['PICDELETE']; ?> Tage sind</b></td>
+    </tr>
+    <tr>
+        <td class="innenh"><?php echo $info; ?></td>
+    </tr>
+    <tr>
+        <td class="innend" align="center"><?php echo $button; ?></td>
+    </tr>
+    <?php echo trl(2); ?>
+    </table>
+    </form>
 
-<?php
-// Seitenfooter fuer alle Seiten
-echo globaler_footer();
+    <?php
+    // Seitenfooter fuer alle Seiten
+    echo globaler_footer();
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Alte Bilder endgueltig loeschen
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+/**
+ * Alte Bilder endgueltig loeschen
+ *
+ * @return void
+ */
 function opdel()
 {
     global $scriptconf, $db;
@@ -421,25 +410,27 @@ function opdel()
     echo globaler_header($sektion, $metaurl, '', '');
     echo globallayoutoben($sektion, BEREICHSNAVI); ?>
 
-<table width="100%" cellspacing="1" cellpadding="0" border="0" class="innen">
-<?php echo trl(); ?>
-<tr>
-    <td class="innend"><b><?php echo $topstatus; ?></b> Wert: <?php echo $wert; ?></td>
-</tr>
-<tr>
-	<td class="innenh"><ul><?php echo $finsishstatus; ?></ul></td>
-</tr>
-<?php echo trl(); ?>
-</table>
+    <table width="100%" cellspacing="1" cellpadding="0" border="0" class="innen">
+    <?php echo trl(); ?>
+    <tr>
+        <td class="innend"><b><?php echo $topstatus; ?></b> Wert: <?php echo $wert; ?></td>
+    </tr>
+    <tr>
+        <td class="innenh"><ul><?php echo $finsishstatus; ?></ul></td>
+    </tr>
+    <?php echo trl(); ?>
+    </table>
 
-<?php
-// Seitenfooter fuer alle Seiten
-echo globaler_footer();
+    <?php
+    // Seitenfooter fuer alle Seiten
+    echo globaler_footer();
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Alte Trafficlogs loeschen - Auswahl nach Monat/Jahr
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+/**
+ * Alte Trafficlogs loeschen - Auswahl nach Monat/Jahr
+ *
+ * @return void
+ */
 function tl()
 {
     global $scriptconf, $db;
@@ -463,57 +454,52 @@ function tl()
             $amo = $spalte['monat'] < 10 ? '0'.$spalte['monat'] : $spalte['monat'];
 
             $logoutput .= '<tr>
-	<td class="'.$cssclass.'" style="white-space: nowrap;">'.$amo.'.'.$spalte['jahr'].'</td>
-	<td class="'.$cssclass.'" style="white-space: nowrap;">'.dateigroesse($spalte['traffic']).'</td>
-	<td class="'.$cssclass.'" style="white-space: nowrap;">'.$spalte['eintraege'].'</td>
-	<td class="'.$cssclass.'" style="white-space: nowrap;" align="center">'.$delcheckbox.'</td>
-</tr>
-';
+            <td class="'.$cssclass.'" style="white-space: nowrap;">'.$amo.'.'.$spalte['jahr'].'</td>
+            <td class="'.$cssclass.'" style="white-space: nowrap;">'.dateigroesse($spalte['traffic']).'</td>
+            <td class="'.$cssclass.'" style="white-space: nowrap;">'.$spalte['eintraege'].'</td>
+            <td class="'.$cssclass.'" style="white-space: nowrap;" align="center">'.$delcheckbox.'</td></tr>';
             $start++;
         }
     } else {
-        $logoutput = '<tr>
-	<td class="innenh" colspan="4"><span class="tippred">Es sind keine Logdaten vorhanden</span></td>
-</tr>
-';
+        $logoutput = '<tr><td class="innenh" colspan="4"><span class="tippred">Es sind keine Logdaten vorhanden</span></td></tr>';
     }
 
     if ($start > 1) {
-        $submitrow = '<tr>
-	<td class="innend" colspan="4" align="center"><input type="submit" class="los" value="Markierte Trafficlogs l&ouml;schen?" onClick="return confirm(\'Aktion wirklich ausführen? Wenn Sie jetzt auf OK klicken werden alle ausgewählten Trafficlogs gelöscht!\')"></td>
-</tr>
-';
+        $submitrow = '<tr><td class="innend" colspan="4" align="center"><input type="submit" class="los" value="Markierte Trafficlogs l&ouml;schen?" onClick="return confirm(\'Aktion wirklich ausfï¿½hren? Wenn Sie jetzt auf OK klicken werden alle ausgewï¿½hlten Trafficlogs gelï¿½scht!\')"></td></tr>';
     }
     echo '<form action="'.SCRIPTNAME.'" method="POST">'."\n";
     echo '<input type="hidden" name="go" value="tldel">'."\n"; ?>
 
-<table width="100%" cellspacing="1" cellpadding="0" border="0" class="innen">
-<?php echo $trennlinie4; ?>
-<tr>
-	<td class="innenhd" colspan="4">Aktuelle Trafficlogs</td>
-</tr>
-<tr>
-	<td class="innenh" colspan="4"><b>Hinweis!</b> L&ouml;schen von Logs ist erst m&ouml;glich wenn diese &auml;lter als 2 Monate sind</td>
-</tr>
-<tr>
-	<td class="innend" style="white-space: nowrap;"><b>Monat/Jahr</b></td>
-	<td class="innend" style="white-space: nowrap;" width="40%"><b>Traffic</b></td>
-	<td class="innend" style="white-space: nowrap;" width="40%"><b>Anzahl Logeintr&auml;ge</b></td>
-	<td class="innend" style="white-space: nowrap;" align="center"><b>L&ouml;schen</b></td>
-</tr>
-<?php echo $logoutput; ?>
-<?php echo $submitrow; ?>
-<?php echo $trennlinie4; ?>
-</table>
-</form>
+    <table width="100%" cellspacing="1" cellpadding="0" border="0" class="innen">
+    <?php echo $trennlinie4; ?>
+    <tr>
+        <td class="innenhd" colspan="4">Aktuelle Trafficlogs</td>
+    </tr>
+    <tr>
+        <td class="innenh" colspan="4"><b>Hinweis!</b> L&ouml;schen von Logs ist erst m&ouml;glich wenn diese &auml;lter als 2 Monate sind</td>
+    </tr>
+    <tr>
+        <td class="innend" style="white-space: nowrap;"><b>Monat/Jahr</b></td>
+        <td class="innend" style="white-space: nowrap;" width="40%"><b>Traffic</b></td>
+        <td class="innend" style="white-space: nowrap;" width="40%"><b>Anzahl Logeintr&auml;ge</b></td>
+        <td class="innend" style="white-space: nowrap;" align="center"><b>L&ouml;schen</b></td>
+    </tr>
+    <?php echo $logoutput; ?>
+    <?php echo $submitrow; ?>
+    <?php echo $trennlinie4; ?>
+    </table>
+    </form>
 
-<?php
-// Seitenfooter fuer alle Seiten
-echo globaler_footer();
+    <?php
+    // Seitenfooter fuer alle Seiten
+    echo globaler_footer();
 }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Alte Counter Logs loeschen
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+/**
+ * Alte Counter Logs loeschen
+ *
+ * @return void
+ */
 function tldel()
 {
     global $scriptconf, $db;
@@ -532,9 +518,3 @@ function tldel()
     redirect($scriptconf['ADMINURL'].'/'.SCRIPTNAME.'?go=tl', 1, 'Trafficlogs gel&ouml;scht...');
     exit;
 }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-//
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-?>
-
-
