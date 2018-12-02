@@ -1,4 +1,5 @@
 <?php
+
 error_reporting(E_ALL & ~E_NOTICE);
 
 if (!defined('SCRIPTSECURE')) {
@@ -6,12 +7,11 @@ if (!defined('SCRIPTSECURE')) {
     exit;
 }
 
-
 /**
- * Trennlinie
+ * Trennlinie.
  *
  * @param string $cs colspan
- * 
+ *
  * @return void
  */
 function trl($cs = '')
@@ -21,86 +21,89 @@ function trl($cs = '')
         <th $cshtml class=\"smalltrenn\"><img src=\"../misc/pixel.gif\" alt=\"\" width=\"1\" height=\"1\" border=\"0\"></th>
     </tr>
     ";
+
     return $trhtml;
 }
 
-
 /**
- * Globaler Header
+ * Globaler Header.
  *
  * @param string $seitentitel Seitentitel
  * @param string $meta        Meta Infos
  * @param string $jsscript    Javascript
  * @param string $zusatzdaten Zusatz
- * 
+ *
  * @return void
  */
-function globaler_header($seitentitel='', $meta='', $jsscript='', $zusatzdaten='')
+function globaler_header($seitentitel = '', $meta = '', $jsscript = '', $zusatzdaten = '')
 {
     global $tparse;
 
-    $contentarray = array(
-        "SEITENTITEL" => $seitentitel,
-        "META" => $meta,
-        "JSSCRIPT" => $jsscript,
-        "ZUSATZDATEN" => $zusatzdaten
-    );
-    $tparse->get_tpldata(ROOT_PFAD . "templates/globalheader.html");
+    $contentarray = [
+        'SEITENTITEL' => $seitentitel,
+        'META'        => $meta,
+        'JSSCRIPT'    => $jsscript,
+        'ZUSATZDATEN' => $zusatzdaten,
+    ];
+    $tparse->get_tpldata(ROOT_PFAD.'templates/globalheader.html');
+
     return $tparse->templateparser($contentarray);
 }
 
 /**
- * Globaler Header Popup
+ * Globaler Header Popup.
  *
  * @param string $seitentitel Seitentitel
  * @param string $meta        Metadaten
  * @param string $jsscript    Javascript
  * @param string $zusatzdaten Zusatz
  * @param string $bodyzusatz  Zusatz zum Body
- * 
+ *
  * @return void
  */
-function globaler_header_pop($seitentitel='', $meta='', $jsscript='', $zusatzdaten='', $bodyzusatz='')
+function globaler_header_pop($seitentitel = '', $meta = '', $jsscript = '', $zusatzdaten = '', $bodyzusatz = '')
 {
     global $tparse;
 
-    $contentarray = array(
-        "SEITENTITEL" => $seitentitel,
-        "META" => $meta,
-        "JSSCRIPT" => $jsscript,
-        "ZUSATZDATEN" => $zusatzdaten,
-        "BODYZUSATZ" => $bodyzusatz
-    ); 
+    $contentarray = [
+        'SEITENTITEL' => $seitentitel,
+        'META'        => $meta,
+        'JSSCRIPT'    => $jsscript,
+        'ZUSATZDATEN' => $zusatzdaten,
+        'BODYZUSATZ'  => $bodyzusatz,
+    ];
 
-    $tparse->get_tpldata(ROOT_PFAD . "templates/globalheaderpopup.html");
+    $tparse->get_tpldata(ROOT_PFAD.'templates/globalheaderpopup.html');
+
     return $tparse->templateparser($contentarray);
 }
 
 /**
- * Globales oberes Layout - Admin
+ * Globales oberes Layout - Admin.
  *
  * @param string $navifile    Name der Navifile
  * @param string $seitentitel Seitentitel
- * 
+ *
  * @return void
  */
-function globallayoutoben($navifile, $seitentitel='')
+function globallayoutoben($navifile, $seitentitel = '')
 {
     global $scriptconf, $db, $tparse;
-    $contentarray = array(
-        "SEITENTITEL" => $seitentitel,
-        "NAVIGATION" => get_navi($navifile),
-        "PROGAMMMENUE" => $tparse->get_tdata(ROOT_PFAD . "setup/progmenue.dat")
-    ); 
-    $tparse->get_tpldata(ROOT_PFAD . "templates/globallayoutoben.html");
+    $contentarray = [
+        'SEITENTITEL'  => $seitentitel,
+        'NAVIGATION'   => get_navi($navifile),
+        'PROGAMMMENUE' => $tparse->get_tdata(ROOT_PFAD.'setup/progmenue.dat'),
+    ];
+    $tparse->get_tpldata(ROOT_PFAD.'templates/globallayoutoben.html');
+
     return $tparse->templateparser($contentarray);
 }
 
 /**
- * Globaler Footer
+ * Globaler Footer.
  *
- * @param integer $simple 1|2 Simpler Footer
- * 
+ * @param int $simple 1|2 Simpler Footer
+ *
  * @return void
  */
 function globaler_footer($simple = 0)
@@ -111,42 +114,43 @@ function globaler_footer($simple = 0)
         return "\n</body>\n</html>";
     } else {
         global $scriptconf, $tparse;
-        $contentarray = array(
-        "VERSION" => $scriptconf['VERSION']
-        );
-        $tparse->get_tpldata(ROOT_PFAD . "templates/globalfooter.html");
+        $contentarray = [
+        'VERSION' => $scriptconf['VERSION'],
+        ];
+        $tparse->get_tpldata(ROOT_PFAD.'templates/globalfooter.html');
+
         return $tparse->templateparser($contentarray);
     }
 }
 
 /**
- * Navigation
+ * Navigation.
  *
  * @param string $navifile Name der Navifile
- * 
+ *
  * @return void
  */
-function get_navi($navifile='')
+function get_navi($navifile = '')
 {
     global $tparse;
     if ($navifile != '') {
-        return $tparse->get_tdata(ROOT_PFAD . "templates/$navifile");
+        return $tparse->get_tdata(ROOT_PFAD."templates/$navifile");
     } else {
         return '&nbsp';
     }
 }
 
 /**
- * Script oder Benutzerfehlerausgabe Adminbereich
+ * Script oder Benutzerfehlerausgabe Adminbereich.
  *
- * @param string  $fehlertitel   Titel
- * @param string  $fehlermeldung Meldung
- * @param string  $navdatei      Name der Navidatei
- * @param integer $backlink      0|1 Zurück-Link ja/nein
- * 
+ * @param string $fehlertitel   Titel
+ * @param string $fehlermeldung Meldung
+ * @param string $navdatei      Name der Navidatei
+ * @param int    $backlink      0|1 Zurück-Link ja/nein
+ *
  * @return void
  */
-function fehlerausgabe($fehlertitel, $fehlermeldung, $navdatei, $backlink=1)
+function fehlerausgabe($fehlertitel, $fehlermeldung, $navdatei, $backlink = 1)
 {
     global $tparse;
     echo globaler_header('Fehler!', '', '', '');
@@ -154,12 +158,12 @@ function fehlerausgabe($fehlertitel, $fehlermeldung, $navdatei, $backlink=1)
 
     $backlinkcode = $backlink == 1 ? '<br><br><div align="center"><a href="javascript:history.go(-1)">Bitte zur&uuml;ckgehen und berichtigen</a></div>' : '';
 
-    $contentarray = array(
-    "TEXTTOP" => $fehlertitel,
-    "TEXTCONT" => "$fehlermeldung $backlinkcode",
-    ); 
+    $contentarray = [
+    'TEXTTOP'  => $fehlertitel,
+    'TEXTCONT' => "$fehlermeldung $backlinkcode",
+    ];
 
-    $tparse->get_tpldata(ROOT_PFAD . "templates/textausgaben.html");
+    $tparse->get_tpldata(ROOT_PFAD.'templates/textausgaben.html');
     echo $tparse->templateparser($contentarray);
 
     echo globaler_footer();
@@ -167,27 +171,27 @@ function fehlerausgabe($fehlertitel, $fehlermeldung, $navdatei, $backlink=1)
 }
 
 /**
- * Script oder Benutzerfehlerausgabe Adminbereich - Popup
+ * Script oder Benutzerfehlerausgabe Adminbereich - Popup.
  *
- * @param string  $fehlertitel   Titel
- * @param string  $fehlermeldung Meldung
- * @param integer $backlink      0|1 Link Ja/Nein
- * 
+ * @param string $fehlertitel   Titel
+ * @param string $fehlermeldung Meldung
+ * @param int    $backlink      0|1 Link Ja/Nein
+ *
  * @return void
  */
-function fehlerausgabepop($fehlertitel,$fehlermeldung,$backlink=1)
+function fehlerausgabepop($fehlertitel, $fehlermeldung, $backlink = 1)
 {
     global $tparse;
     echo globaler_header_pop('Fehler!', '', '', '', '');
 
     $backlinkcode = $backlink == 1 ? '<br><br><div align="center"><a href="javascript:history.go(-1)">Bitte zur&uuml;ckgehen und berichtigen</a></div>' : '';
 
-    $contentarray = array(
-    "TEXTTOP" => $fehlertitel,
-    "TEXTCONT" => "$fehlermeldung $backlinkcode",
-    ); 
+    $contentarray = [
+    'TEXTTOP'  => $fehlertitel,
+    'TEXTCONT' => "$fehlermeldung $backlinkcode",
+    ];
 
-    $tparse->get_tpldata(ROOT_PFAD . "templates/textausgaben.html");
+    $tparse->get_tpldata(ROOT_PFAD.'templates/textausgaben.html');
     echo $tparse->templateparser($contentarray);
 
     echo globaler_footer(2);
@@ -195,15 +199,15 @@ function fehlerausgabepop($fehlertitel,$fehlermeldung,$backlink=1)
 }
 
 /**
- * Redirect Routine
+ * Redirect Routine.
  *
- * @param string  $url     Weiterleitungs-Ziel
- * @param integer $wlz     Weiterleitungs-Zeit
- * @param string  $infotxt Informationstext
- * 
+ * @param string $url     Weiterleitungs-Ziel
+ * @param int    $wlz     Weiterleitungs-Zeit
+ * @param string $infotxt Informationstext
+ *
  * @return void
  */
-function redirect($url, $wlz=1, $infotxt='')
+function redirect($url, $wlz = 1, $infotxt = '')
 {
     global $tparse;
 
@@ -218,15 +222,14 @@ function redirect($url, $wlz=1, $infotxt='')
     echo globaler_header('Weiterleitung', "<meta http-equiv=\"refresh\" content=\"$wlz; URL=$url\">", '', '');
 
     echo '<br><br><br><table cellspacing="2" cellpadding="2" border="0" width="100%"><tr><td width="20%">&nbsp;</td><td width="60%">';
-    $contentarray = array(
-        "TEXTTOP" => '<b>Weiterleitung</b>',
-        "TEXTCONT" => $infotxt."<br><br>Sie werden ".$wlwort." weitergeleitet, sollte das nicht funktionieren bitte <a href=\"".$url."\">hier klicken</a><br><br><br>",
-    );
+    $contentarray = [
+        'TEXTTOP'  => '<b>Weiterleitung</b>',
+        'TEXTCONT' => $infotxt.'<br><br>Sie werden '.$wlwort.' weitergeleitet, sollte das nicht funktionieren bitte <a href="'.$url.'">hier klicken</a><br><br><br>',
+    ];
 
-    $tparse->get_tpldata(ROOT_PFAD . "templates/textausgaben.html");
+    $tparse->get_tpldata(ROOT_PFAD.'templates/textausgaben.html');
     echo $tparse->templateparser($contentarray);
     echo '</td><td width="20%">&nbsp;</td></tr></table>';
     echo globaler_footer(1);
     exit;
 }
-?>
