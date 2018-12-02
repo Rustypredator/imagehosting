@@ -5,25 +5,25 @@ define('SCRIPTSECURE', 1);
 define('ROOT_PFAD', './');
 define('SCRIPTNAME', 'admin.php');
 define('BEREICHSNAVI', 'adminnavi.html');
-// Rel. Pfad zur DB-Daten oder Config Setup Datei 
+// Rel. Pfad zur DB-Daten oder Config Setup Datei
 define('SETUP_PFAD', './');
 // Rel. Pfad zum Hauptverz. ausserhalb Admin
 define('RELPFAD', '../');
 
 // #########################################################
 // Datenbank Class einbinden
-require_once ROOT_PFAD. "includes/class_dbhandler_mysql.php";
+require_once ROOT_PFAD.'includes/class_dbhandler_mysql.php';
 // $db definieren
 $db = new dbhandler_mysql();
 // DB Verbindung aufbauen
 $db->db_connect();
 // Scriptconfig Daten holen
-#$scriptconf = $db->get_systemdaten();
-require_once ROOT_PFAD . "setup/setup.php";
+//$scriptconf = $db->get_systemdaten();
+require_once ROOT_PFAD.'setup/setup.php';
 
 // #########################################################
-require_once ROOT_PFAD. "includes/globale_funct_inc.php";
-require_once ROOT_PFAD. "includes/adminlayout.php";
+require_once ROOT_PFAD.'includes/globale_funct_inc.php';
+require_once ROOT_PFAD.'includes/adminlayout.php';
 
 // Templateparser laden
 $tparse = new template();
@@ -33,41 +33,41 @@ $tparse = new template();
 // Aktionen fuer diese Datei
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 $go = '';
-if (isset($_GET['go']) && $_GET['go'] != "") { 
-    $go = datensaver($_GET['go'], 50, 4); 
-} elseif (isset($_POST['go']) && $_POST['go'] != "") { 
+if (isset($_GET['go']) && $_GET['go'] != '') {
+    $go = datensaver($_GET['go'], 50, 4);
+} elseif (isset($_POST['go']) && $_POST['go'] != '') {
     $go = datensaver($_POST['go'], 50, 4);
-} 
+}
 
 switch ($go) {
-case "info":
+case 'info':
     info();
     break;
-case "logincheck":
+case 'logincheck':
     logincheck();
     break;
-case "startseite":
+case 'startseite':
     startseite();
     break;
-case "systemdaten":
+case 'systemdaten':
     systemdaten();
     break;
-case "systemdatensave":
+case 'systemdatensave':
     systemdatensave();
     break;
-case "admindaten":
+case 'admindaten':
     admindaten();
     break;
-case "newadmindatensave":
+case 'newadmindatensave':
     newadmindatensave();
     break;
-case "adminlog":
+case 'adminlog':
     adminlog();
     break;
-case "adminlogdel":
+case 'adminlogdel':
     adminlogdel();
-    break;            
-case "logout":
+    break;
+case 'logout':
     logout();
     break;
 default:
@@ -78,29 +78,29 @@ default:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 // Logindateneingabe Formular
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-function login($loginerr = '') {
+function login($loginerr = '')
+{
     global $scriptconf, $db, $tparse;
 
     if (file_exists('installer.php')) {
         $sektion = 'Administrator Login';
         echo globaler_header($sektion, '', '', '');
-        $contentarray2 = array(
-        "FEHLERTITEL"     => '&#187; INSTALLERDATEI VORHANDEN',
-        "FEHLERTEXT"     => 'Bitte l&ouml;schen Sie nach der Installation des Scriptes die installer.php. Erst dann k&ouml;nnen Sie sich in den Adminbereich einloggen.' 
-        );
-        $tparse->get_tpldata(ROOT_PFAD . "templates/adminloginerror.html");
+        $contentarray2 = [
+        'FEHLERTITEL'     => '&#187; INSTALLERDATEI VORHANDEN',
+        'FEHLERTEXT'      => 'Bitte l&ouml;schen Sie nach der Installation des Scriptes die installer.php. Erst dann k&ouml;nnen Sie sich in den Adminbereich einloggen.',
+        ];
+        $tparse->get_tpldata(ROOT_PFAD.'templates/adminloginerror.html');
         echo $tparse->templateparser($contentarray2);
         echo globaler_footer(1);
         exit;
     }
 
-
-    $logzeit         = time();
-    $gesamtlog         = $db->dbquery_first("SELECT SUM(aktion) AS anz FROM ".$db->db_prefix."adminlog WHERE aktion = 1 AND ($logzeit - UNIX_TIMESTAMP(aktzeit)) < 900");
-    $gesamtlogerr     = $gesamtlog['anz'] == '' ? 0 : $gesamtlog['anz'];
-    $versuche         = 5 - $gesamtlogerr;
-    $versuchetxt     = $versuche > 1 ? ' Versuche' : ' Versuch';
-    $loginsperrtext = $gesamtlog['anz'] > 0 ? '<br><br>Noch '.$versuche . $versuchetxt.' dann wird der Login f&uuml;r 15 Minuten gesperrt!' : '';
+    $logzeit = time();
+    $gesamtlog = $db->dbquery_first('SELECT SUM(aktion) AS anz FROM '.$db->db_prefix."adminlog WHERE aktion = 1 AND ($logzeit - UNIX_TIMESTAMP(aktzeit)) < 900");
+    $gesamtlogerr = $gesamtlog['anz'] == '' ? 0 : $gesamtlog['anz'];
+    $versuche = 5 - $gesamtlogerr;
+    $versuchetxt = $versuche > 1 ? ' Versuche' : ' Versuch';
+    $loginsperrtext = $gesamtlog['anz'] > 0 ? '<br><br>Noch '.$versuche.$versuchetxt.' dann wird der Login f&uuml;r 15 Minuten gesperrt!' : '';
 
     // Meldung wenn falsche Logindaten...
     if (isset($loginerr)) {
@@ -128,28 +128,29 @@ function login($loginerr = '') {
         echo '<form action="'.$scriptconf['ADMINURL'].'/'.SCRIPTNAME.'" method="POST">'."\n";
         echo '<input type="hidden" name="go" value="logincheck">'."\n";
 
-        $contentarray1 = array(
-        "LOGINBEREICH"     => $sektion,
-        "LOGINFEHLER"     => $hinweis 
-        );
-        
-        $tparse->get_tpldata(ROOT_PFAD . "templates/adminlogin.html");
+        $contentarray1 = [
+        'LOGINBEREICH'     => $sektion,
+        'LOGINFEHLER'      => $hinweis,
+        ];
+
+        $tparse->get_tpldata(ROOT_PFAD.'templates/adminlogin.html');
         echo $tparse->templateparser($contentarray1);
     } else {
-        $contentarray2 = array(
-        "FEHLERTITEL"     => '&#187; LOGIN GESPERRT',
-        "FEHLERTEXT"     => 'Der Administratorzugang wurde wegen wiederholter Falscheingaben der Zugangsdaten gesperrt!' 
-        );
-        $tparse->get_tpldata(ROOT_PFAD . "templates/adminloginerror.html");
+        $contentarray2 = [
+        'FEHLERTITEL'     => '&#187; LOGIN GESPERRT',
+        'FEHLERTEXT'      => 'Der Administratorzugang wurde wegen wiederholter Falscheingaben der Zugangsdaten gesperrt!',
+        ];
+        $tparse->get_tpldata(ROOT_PFAD.'templates/adminloginerror.html');
         echo $tparse->templateparser($contentarray2);
     } // if / else installer/updater/Loginsperre
     echo globaler_footer(1);
-} 
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 // Logindaten checken und Cookie setzen, oder zurueck zum Login
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-function logincheck() {
+function logincheck()
+{
     global $scriptconf, $db;
 
     $username = datensaver($_POST['username'], 50, 4);
@@ -157,15 +158,15 @@ function logincheck() {
 
     //-----------------------------------------------------------------//
     // Fehlerbehandlung
-    $fehlermeldung = "";
-    $fehler_gefunden = "";
+    $fehlermeldung = '';
+    $fehler_gefunden = '';
 
     if ($username == '') {
-        $fehler_gefunden = 1 ; 
+        $fehler_gefunden = 1;
     }
 
     if ($passwort == '') {
-        $fehler_gefunden = 1 ; 
+        $fehler_gefunden = 1;
     }
 
     // Wenn Fehler...
@@ -174,43 +175,41 @@ function logincheck() {
         exit;
     }
 
-    $logzeit         = time();
-    $gesamtlog         = $db->dbquery_first("SELECT SUM(aktion) AS anz FROM ".$db->db_prefix."adminlog WHERE aktion = 1 AND ($logzeit - UNIX_TIMESTAMP(aktzeit)) < 900");
-    $gesamtlogerr     = $gesamtlog['anz'] == '' ? 0 : $gesamtlog['anz'];
+    $logzeit = time();
+    $gesamtlog = $db->dbquery_first('SELECT SUM(aktion) AS anz FROM '.$db->db_prefix."adminlog WHERE aktion = 1 AND ($logzeit - UNIX_TIMESTAMP(aktzeit)) < 900");
+    $gesamtlogerr = $gesamtlog['anz'] == '' ? 0 : $gesamtlog['anz'];
     if ($gesamtlog['anz'] >= 5) {
-        header("Location: http://www.google.com");
+        header('Location: http://www.google.com');
         exit;
     }
 
     $user_ip = get_uip();
 
-    $admindata = $db->dbquery_first("SELECT username, passwort, chili FROM ".$db->db_prefix."admin WHERE BINARY(username) = '".$username."' AND passwort = MD5(CONCAT('".$passwort."', chili))");
+    $admindata = $db->dbquery_first('SELECT username, passwort, chili FROM '.$db->db_prefix."admin WHERE BINARY(username) = '".$username."' AND passwort = MD5(CONCAT('".$passwort."', chili))");
     $gefunden = $admindata['passwort'] != '' ? 1 : 0;
 
     if ($gefunden) {
-
-        $cookiestringval = bin2hex($admindata['username'] .'#'. $admindata['passwort']);
-        setcookie($scriptconf['COOKPREFIX'].'admin', $cookiestringval, time()+86400, '/');
+        $cookiestringval = bin2hex($admindata['username'].'#'.$admindata['passwort']);
+        setcookie($scriptconf['COOKPREFIX'].'admin', $cookiestringval, time() + 86400, '/');
 
         $db->run_update_query('UPDATE', 'admin', "lastlogin = NOW(), lastlogin_ip = '".$db->quoteval($user_ip)."'");
         $db->run_insert_query('INSERT INTO', 'adminlog', "(logid, aktion, aktzeit, aktip, aktionkomm, mem_id) VALUES (NULL, 2, NOW(), '".$db->quoteval($user_ip)."', 'Erfolgreicher Login in Administrationsbereich', 0)");
 
-        redirect($scriptconf['ADMINURL'].'/' . SCRIPTNAME . '?go=startseite', 1, '<span class="tippgreen">Sie haben sich erfolgreich angemeldet</span>');
+        redirect($scriptconf['ADMINURL'].'/'.SCRIPTNAME.'?go=startseite', 1, '<span class="tippgreen">Sie haben sich erfolgreich angemeldet</span>');
         exit;
-
     } else {
-
-        $db->run_insert_query('INSERT INTO', 'adminlog', "(logid, aktion, aktzeit, aktip, aktionkomm, mem_id) VALUES (NULL, 1, NOW(), '".$db->quoteval($user_ip)."', 'Versuchter Login in Administrationsbereich mit ".$db->quoteval($username)." und ".$db->quoteval($passwort)."', 0)");
+        $db->run_insert_query('INSERT INTO', 'adminlog', "(logid, aktion, aktzeit, aktip, aktionkomm, mem_id) VALUES (NULL, 1, NOW(), '".$db->quoteval($user_ip)."', 'Versuchter Login in Administrationsbereich mit ".$db->quoteval($username).' und '.$db->quoteval($passwort)."', 0)");
 
         // Fehler
         login(1);
     }
-} 
+}
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 // Startseite der Administration
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-function startseite() {
+function startseite()
+{
     global $scriptconf, $db, $tparse;
     passdatencheck();
 
@@ -226,7 +225,7 @@ function startseite() {
     $datepart = explode('-', $aktuell);
 
     // Bilder
-    $gesamtpic = $db->dbquery_first("SELECT COUNT(*) AS anz FROM ".$db->db_prefix."uploads");
+    $gesamtpic = $db->dbquery_first('SELECT COUNT(*) AS anz FROM '.$db->db_prefix.'uploads');
     if ($gesamtpic['anz'] > 0) {
         $bildlink = '<a href="admin_bilder.php">Liste ansehen</a>';
     } else {
@@ -234,7 +233,7 @@ function startseite() {
     }
 
     // neue Bilder
-    $gesamtpicneu = $db->dbquery_first("SELECT COUNT(*) AS anz FROM ".$db->db_prefix."uploads WHERE UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(up_datetime) < 86400");
+    $gesamtpicneu = $db->dbquery_first('SELECT COUNT(*) AS anz FROM '.$db->db_prefix.'uploads WHERE UNIX_TIMESTAMP(NOW()) - UNIX_TIMESTAMP(up_datetime) < 86400');
     if ($gesamtpicneu['anz'] > 0) {
         $bildlinkneu = '<a href="admin_bilder.php?go=neue">Liste ansehen</a>';
     } else {
@@ -242,26 +241,26 @@ function startseite() {
     }
 
     // Belegter Speicherplatz
-    $gesamtmb = $db->dbquery_first("SELECT SUM(up_bytesize + up_thumbbytesize) AS mb FROM ".$db->db_prefix."uploads");
+    $gesamtmb = $db->dbquery_first('SELECT SUM(up_bytesize + up_thumbbytesize) AS mb FROM '.$db->db_prefix.'uploads');
 
     // Traffic
-    $gesamttr = $db->dbquery_first("SELECT SUM(traffic_bytes + traffic_thbytes) AS traffic, COUNT(*) AS eintraege, DATE_FORMAT(traffic_datetime, '%m-%Y')AS deldate FROM ".$db->db_prefix."trafficlog  WHERE MONTH(traffic_datetime) = ".$datepart[1]." AND YEAR(traffic_datetime) = ".$datepart[0]." GROUP BY MONTH(traffic_datetime), YEAR(traffic_datetime)");
+    $gesamttr = $db->dbquery_first("SELECT SUM(traffic_bytes + traffic_thbytes) AS traffic, COUNT(*) AS eintraege, DATE_FORMAT(traffic_datetime, '%m-%Y')AS deldate FROM ".$db->db_prefix.'trafficlog  WHERE MONTH(traffic_datetime) = '.$datepart[1].' AND YEAR(traffic_datetime) = '.$datepart[0].' GROUP BY MONTH(traffic_datetime), YEAR(traffic_datetime)');
 
     // #####################################################
     $mysqlversion = $db->dbquery_first("SHOW VARIABLES LIKE 'version'");
     // #####################################################
 
-    $contentarray = array(
-        "PHPVERSION" => phpversion(),
-        "MYSQLVERSION" => $mysqlversion["Value"],
-        "IMAGECOUNT" => $gesamtpic['anz'],
-        "IMAGESLINK" => $bildlink,
-        "IMAGESCOUNTNEW" => $gesamtpicneu['anz'],
-        "IMAGESLINKNEW" => $bildlinkneu,
-        "USEDSPACE" => dateigroesse($gesamtmb['mb']),
-        "USEDTRAFFIC" => dateigroesse($gesamttr['traffic'])
-    );
-    $tparse->get_tpldata(ROOT_PFAD . "templates/adminstart.html");
+    $contentarray = [
+        'PHPVERSION'     => phpversion(),
+        'MYSQLVERSION'   => $mysqlversion['Value'],
+        'IMAGECOUNT'     => $gesamtpic['anz'],
+        'IMAGESLINK'     => $bildlink,
+        'IMAGESCOUNTNEW' => $gesamtpicneu['anz'],
+        'IMAGESLINKNEW'  => $bildlinkneu,
+        'USEDSPACE'      => dateigroesse($gesamtmb['mb']),
+        'USEDTRAFFIC'    => dateigroesse($gesamttr['traffic']),
+    ];
+    $tparse->get_tpldata(ROOT_PFAD.'templates/adminstart.html');
     echo $tparse->templateparser($contentarray);
     // Seitenfooter fuer alle Seiten
     echo globaler_footer();
@@ -270,7 +269,8 @@ function startseite() {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 // Systemdaten
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-function systemdaten() {
+function systemdaten()
+{
     global $scriptconf, $db, $tparse;
     passdatencheck();
 
@@ -279,29 +279,28 @@ function systemdaten() {
     echo globallayoutoben($sektion, BEREICHSNAVI);
 
     // Byte in MB umwandeln
-    $mbwert1 = sprintf("%01.2f", ($scriptconf['MAXPICUPLOADMB'] / 1024 / 1024));
-    $mbwert2 = sprintf("%01.2f", ($scriptconf['MAXSPEICHERPLATZ'] / 1024 / 1024));
-
+    $mbwert1 = sprintf('%01.2f', ($scriptconf['MAXPICUPLOADMB'] / 1024 / 1024));
+    $mbwert2 = sprintf('%01.2f', ($scriptconf['MAXSPEICHERPLATZ'] / 1024 / 1024));
 
     echo '<form action="'.SCRIPTNAME.'" method="POST">'."\n";
     echo '<input type="hidden" name="go" value="systemdatensave">'."\n";
 
-    $content = array(
-        "HTMLPATH" => $scriptconf['HTMLPFAD'],
-        "ADMINPATH" => $scriptconf['ADMINPFAD'],
-        "HTMLURL" => $scriptconf['HTMLURL'],
-        "ADMINURL" => $scriptconf['ADMINURL'],
-        "HOMEPAGEURL" => $scriptconf['HOMEPAGEURL'],
-        "SITETITLE" => $scriptconf['SITETITEL'],
-        "MAXIMGSIZE" => $mbwert1,
-        "MAXSPACE" => $mbwert2,
-        "DELTIME" => $scriptconf['PICDELETE'],
-        "THUMBWIDTH" => $scriptconf['THUMBWIDTH'],
-        "THUMBHEIGHT" => $scriptconf['THUMBHEIGHT'],
-        "ADMINNAME" => $scriptconf['ADMINNAME'],
-        "ADMINMAIL" => $scriptconf['ADMINMAIL']
-    );
-    $tparse->get_tpldata(ROOT_PFAD . "templates/adminsystemdata.html");
+    $content = [
+        'HTMLPATH'    => $scriptconf['HTMLPFAD'],
+        'ADMINPATH'   => $scriptconf['ADMINPFAD'],
+        'HTMLURL'     => $scriptconf['HTMLURL'],
+        'ADMINURL'    => $scriptconf['ADMINURL'],
+        'HOMEPAGEURL' => $scriptconf['HOMEPAGEURL'],
+        'SITETITLE'   => $scriptconf['SITETITEL'],
+        'MAXIMGSIZE'  => $mbwert1,
+        'MAXSPACE'    => $mbwert2,
+        'DELTIME'     => $scriptconf['PICDELETE'],
+        'THUMBWIDTH'  => $scriptconf['THUMBWIDTH'],
+        'THUMBHEIGHT' => $scriptconf['THUMBHEIGHT'],
+        'ADMINNAME'   => $scriptconf['ADMINNAME'],
+        'ADMINMAIL'   => $scriptconf['ADMINMAIL'],
+    ];
+    $tparse->get_tpldata(ROOT_PFAD.'templates/adminsystemdata.html');
     echo $tparse->templateparser($content);
 
     // Seitenfooter fuer alle Seiten
@@ -311,40 +310,41 @@ function systemdaten() {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 // Systemdaten speichern
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-function systemdatensave() {
+function systemdatensave()
+{
     global $scriptconf,$db;
     passdatencheck();
 
     // #########################################################################
     //  Systempfade, URLs und Webseitentitel
 
-    $htmlpfad                         = datensaver($_POST['htmlpfad'], 100, 1);
-    $adminpfad                         = datensaver($_POST['adminpfad'], 100, 1);
-    $htmlurl                         = datensaver($_POST['htmlurl'], 100, 1);
-    $adminurl                         = datensaver($_POST['adminurl'], 100, 1);
-    $homepageurl                     = datensaver($_POST['homepageurl'], 100, 1);
-    $sitetitel                         = datensaver($_POST['sitetitel'], 100, 1);
+    $htmlpfad = datensaver($_POST['htmlpfad'], 100, 1);
+    $adminpfad = datensaver($_POST['adminpfad'], 100, 1);
+    $htmlurl = datensaver($_POST['htmlurl'], 100, 1);
+    $adminurl = datensaver($_POST['adminurl'], 100, 1);
+    $homepageurl = datensaver($_POST['homepageurl'], 100, 1);
+    $sitetitel = datensaver($_POST['sitetitel'], 100, 1);
 
     // #########################################################################
     //  Allg. Admindaten
 
-    $adminname                         = datensaver($_POST['adminname'], 100, 1);
-    $adminmail                         = datensaver($_POST['adminmail'], 100, 9);
+    $adminname = datensaver($_POST['adminname'], 100, 1);
+    $adminmail = datensaver($_POST['adminmail'], 100, 9);
 
     // #########################################################################
     // Uploader
 
-    $maxpicuploadmb                    = format_preis($_POST['maxpicuploadmb'], 100, 1);
-    $maxspeicherplatz                = format_preis($_POST['maxspeicherplatz'], 100, 1);
-    $picdelete                        = datensaver($_POST['picdelete'], 10, 3);
-    $thumbwidth                        = datensaver($_POST['thumbwidth'], 10, 3);
-    $thumbheight                    = datensaver($_POST['thumbheight'], 10, 3);
+    $maxpicuploadmb = format_preis($_POST['maxpicuploadmb'], 100, 1);
+    $maxspeicherplatz = format_preis($_POST['maxspeicherplatz'], 100, 1);
+    $picdelete = datensaver($_POST['picdelete'], 10, 3);
+    $thumbwidth = datensaver($_POST['thumbwidth'], 10, 3);
+    $thumbheight = datensaver($_POST['thumbheight'], 10, 3);
 
     // #########################################################################
     // Setupdefaults bei Werten setzen
 
-    $maxpicuploadmb                 = $maxpicuploadmb != '' ? ($maxpicuploadmb * 1024 * 1024) : (1 * 1024 * 1024);
-    $maxspeicherplatz                 = $maxspeicherplatz != '' ?  ($maxspeicherplatz * 1024 * 1024) : (100 * 1024 * 1024);
+    $maxpicuploadmb = $maxpicuploadmb != '' ? ($maxpicuploadmb * 1024 * 1024) : (1 * 1024 * 1024);
+    $maxspeicherplatz = $maxspeicherplatz != '' ? ($maxspeicherplatz * 1024 * 1024) : (100 * 1024 * 1024);
 
     // #########################################################################
     // Fehlerbehandlung
@@ -359,32 +359,32 @@ function systemdatensave() {
 
     $errormeldung = '<li>Die Pfadangabe f&uuml;r den "Pfad zum Admin Verzeichnis" ist falsch</li>'."\n";
     if (!@opendir($adminpfad)) {
-        $fehlermeldung = $fehlermeldung.$errormeldung ;
-        $fehler_gefunden = 1 ;
+        $fehlermeldung = $fehlermeldung.$errormeldung;
+        $fehler_gefunden = 1;
     }
 
     $errormeldung = '<li>Das Feld "URL zum html Verzeichnis" enth&auml;lt keine oder keine g&uuml;ltigen URL Daten</li>'."\n";
     if ($htmlurl == '' || urlcounter($htmlurl) < 1) {
-        $fehlermeldung = $fehlermeldung.$errormeldung ;
-        $fehler_gefunden = 1 ;
+        $fehlermeldung = $fehlermeldung.$errormeldung;
+        $fehler_gefunden = 1;
     }
 
     $errormeldung = '<li>Das Feld "URL zum Adminverzeichnis" enth&auml;lt keine oder keine g&uuml;ltigen URL Daten</li>'."\n";
     if ($adminurl == '' || urlcounter($adminurl) < 1) {
-        $fehlermeldung = $fehlermeldung.$errormeldung ;
-        $fehler_gefunden = 1 ;
+        $fehlermeldung = $fehlermeldung.$errormeldung;
+        $fehler_gefunden = 1;
     }
 
     $errormeldung = '<li>Das Feld "Betreiber/Administrator Name" enth&auml;lt keine Daten</li>'."\n";
     if ($adminname == '') {
-        $fehlermeldung = $fehlermeldung.$errormeldung ;
-        $fehler_gefunden = 1 ;
+        $fehlermeldung = $fehlermeldung.$errormeldung;
+        $fehler_gefunden = 1;
     }
 
     $errormeldung = '<li>Das Feld "E-Mail Adresse" wurde nicht ausgef�llt oder keine g&uuml;ltige E-Mail Adresse eingetragen.</li>'."\n";
     if ($adminmail == 'nm') {
-        $fehlermeldung = $fehlermeldung.$errormeldung ;
-        $fehler_gefunden = 1 ;
+        $fehlermeldung = $fehlermeldung.$errormeldung;
+        $fehler_gefunden = 1;
     }
 
     // Wenn Fehler - dann aufruf der Fehlerfunktion...
@@ -393,7 +393,7 @@ function systemdatensave() {
         exit;
     }
 
-    ##########################################################
+    //#########################################################
 
     // art = S, T oder Z = STRING, TEXT, ZAHL
 
@@ -418,14 +418,15 @@ function systemdatensave() {
 
     rewrite_setup();
 
-    redirect($adminurl.'/' . SCRIPTNAME . '?go=systemdaten', 1, 'Setupdaten wurden gespeichert...');
+    redirect($adminurl.'/'.SCRIPTNAME.'?go=systemdaten', 1, 'Setupdaten wurden gespeichert...');
     exit;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 // Admindaten
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-function admindaten() {
+function admindaten()
+{
     global $scriptconf, $db;
     passdatencheck();
 
@@ -434,8 +435,7 @@ function admindaten() {
     echo globallayoutoben($sektion, BEREICHSNAVI);
 
     echo '<form action="'.SCRIPTNAME.'" method="POST">'."\n";
-    echo '<input type="hidden" name="go" value="newadmindatensave">'."\n";
-    ?>
+    echo '<input type="hidden" name="go" value="newadmindatensave">'."\n"; ?>
 
     <table width="100%" cellspacing="1" cellpadding="0" border="0" class="innen">
     <?php echo trl(2); ?>
@@ -476,7 +476,8 @@ function admindaten() {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 // Neue Admindaten speichern
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-function newadmindatensave() {
+function newadmindatensave()
+{
     global $scriptconf, $db;
     passdatencheck();
 
@@ -496,15 +497,15 @@ function newadmindatensave() {
     // Erlaubte Zeichen Testen
     $errormeldung = '<li>Das Feld "Jetziger Username" wurde nicht korrekt ausgef�llt. Es d&uuml;rfen nur nur Buchstaben von A-Z a-z inkl. Umlaute, Zahlen von 0-9,der Punkt, der Unterstrich und Bindestrich verwendet werden.</li>'."\n";
     if (!preg_match("/^[0-9a-zA-Z�-��-��\._\-]{5,30}$/", $oldusername)) {
-        $fehlermeldung = $fehlermeldung.$errormeldung ;
-        $fehler_gefunden = 1 ;
+        $fehlermeldung = $fehlermeldung.$errormeldung;
+        $fehler_gefunden = 1;
     }
 
     // Erlaubte Zeichen Testen
     $errormeldung = '<li>Das Feld \"Jetziges Passwort\" wurde nicht korrekt ausgef�llt. Es d&uuml;rfen nur nur Buchstaben von A-Z a-z inkl. Umlaute, Zahlen von 0-9,der Punkt, der Unterstrich und Bindestrich verwendet werden.</li>'."\n";
     if (!preg_match("/^[0-9a-zA-Z�-��-��\._\-]{5,30}$/", $oldpasswort)) {
-        $fehlermeldung = $fehlermeldung.$errormeldung ;
-        $fehler_gefunden = 1 ;
+        $fehlermeldung = $fehlermeldung.$errormeldung;
+        $fehler_gefunden = 1;
     }
 
     // Wenn Fehler - dann aufruf der Fehlerfunktion...
@@ -513,11 +514,10 @@ function newadmindatensave() {
         exit;
     }
 
-
     $gefunden = 0;
 
     if ($oldusername != '' && $oldpasswort != '') {
-        $testadmindata = $db->dbquery_first("SELECT username, passwort, chili FROM ".$db->db_prefix."admin WHERE BINARY(username) = '".$oldusername."' AND passwort = MD5(CONCAT('".$oldpasswort."', chili))");
+        $testadmindata = $db->dbquery_first('SELECT username, passwort, chili FROM '.$db->db_prefix."admin WHERE BINARY(username) = '".$oldusername."' AND passwort = MD5(CONCAT('".$oldpasswort."', chili))");
         $gefunden = $testadmindata['passwort'] != '' ? 1 : 0;
     }
 
@@ -528,42 +528,42 @@ function newadmindatensave() {
 
     $errormeldung = '<li>Es konnten keine Daten f&uuml;r  "Jetziger Username" und  "Jetziges Passwort" ermittelt werden!</li>'."\n";
     if (!$gefunden) {
-        $fehlermeldung = $fehlermeldung.$errormeldung ;
-        $fehler_gefunden = 1 ;
+        $fehlermeldung = $fehlermeldung.$errormeldung;
+        $fehler_gefunden = 1;
     }
 
     // Pr�fung auf bestimmte Minimall�nge
     $errormeldung = '<li>Das Feld "Neuer Username" wurde nicht korrekt ausgef�llt. Mindestens 5 Zeichen m&uuml;ssen in dieses Feldes eingegeben werden.<br><b>Sie haben '.$laengeuser.' Zeichen eingetragen.</b></li>'."\n";
     if (strlen($newusername) < 5) {
-        $fehlermeldung = $fehlermeldung.$errormeldung ;
-        $fehler_gefunden = 1 ;
+        $fehlermeldung = $fehlermeldung.$errormeldung;
+        $fehler_gefunden = 1;
     }
 
     // Erlaubte Zeichen Testen
     $errormeldung = '<li>Das Feld "Neuer Username" wurde nicht korrekt ausgef�llt. Es d&uuml;rfen nur nur Buchstaben von A-Z a-z inkl. Umlaute, Zahlen von 0-9,der Punkt, der Unterstrich und Bindestrich verwendet werden.</li>'."\n";
     if (!preg_match("/^[0-9a-zA-Z�-��-��\._\-]{5,30}$/", $newusername)) {
-        $fehlermeldung = $fehlermeldung.$errormeldung ;
-        $fehler_gefunden = 1 ;
+        $fehlermeldung = $fehlermeldung.$errormeldung;
+        $fehler_gefunden = 1;
     }
 
     // Pr�fung auf bestimmte Minimal und Maximall�nge
     $errormeldung = '<li>Das Feld "Neues Passwort" wurde nicht korrekt ausgef�llt. Mindestens 5 Zeichen m&uuml;ssen in dieses Feldes eingegeben werden.<br><b>Sie haben '.$laengepass.' Zeichen eingetragen.</b></li>'."\n";
     if (strlen($newpasswort) < 5) {
-        $fehlermeldung = $fehlermeldung.$errormeldung ;
-        $fehler_gefunden = 1 ;
+        $fehlermeldung = $fehlermeldung.$errormeldung;
+        $fehler_gefunden = 1;
     }
 
     // Erlaubte Zeichen Testen
     $errormeldung = '<li>Das Feld "Neues Passwort" wurde nicht korrekt ausgef�llt. Es d&uuml;rfen nur nur Buchstaben von A-Z a-z inkl. Umlaute, Zahlen von 0-9,der Punkt, der Unterstrich und Bindestrich verwendet werden.</li>'."\n";
     if (!preg_match("/^[0-9a-zA-Z�-��-��\._\-]{5,30}$/", $newpasswort)) {
-        $fehlermeldung = $fehlermeldung.$errormeldung ;
-        $fehler_gefunden = 1 ;
+        $fehlermeldung = $fehlermeldung.$errormeldung;
+        $fehler_gefunden = 1;
     }
 
     $errormeldung = '<li>Der Username und das Passwort sind gleich, dies ist aus Sicherheitsgr&uuml;nden nicht gestattet</li>'."\n";
     if ($newusername == $newpasswort) {
-        $fehlermeldung = $fehlermeldung.$errormeldung ;
-        $fehler_gefunden = 1 ;
+        $fehlermeldung = $fehlermeldung.$errormeldung;
+        $fehler_gefunden = 1;
     }
 
     // Wenn Fehler - dann aufruf der Fehlerfunktion...
@@ -579,7 +579,7 @@ function newadmindatensave() {
     // Maildaten zusamenstellen
 
     $pwchangedatum = datumausgabe('3');
-    $login_url = $scriptconf['ADMINURL'] .'/' . SCRIPTNAME;
+    $login_url = $scriptconf['ADMINURL'].'/'.SCRIPTNAME;
 
     $messageadmin = 'Hallo '.$scriptconf['ADMINNAME'].',
 
@@ -596,28 +596,29 @@ function newadmindatensave() {
     ====================================
     ';
 
-    $empfaenger     = $scriptconf['ADMINNAME'].'<'.$scriptconf['ADMINMAIL'].'>';
-    $absender         = $scriptconf['ADMINNAME'].'<'.$scriptconf['ADMINMAIL'].'>';
-    $betreff         = 'Ihre neuen Logindaten';
+    $empfaenger = $scriptconf['ADMINNAME'].'<'.$scriptconf['ADMINMAIL'].'>';
+    $absender = $scriptconf['ADMINNAME'].'<'.$scriptconf['ADMINMAIL'].'>';
+    $betreff = 'Ihre neuen Logindaten';
 
     textmail($empfaenger, $absender, $betreff, $messageadmin, $scriptconf['ADMINMAIL'], $scriptconf['ADMINMAIL']);
 
-    $newcookdata = $db->dbquery_first("SELECT username, passwort FROM ".$db->db_prefix."admin WHERE BINARY(username) = '".$newusername."' AND passwort = MD5(CONCAT('".$newpasswort."', chili))");
+    $newcookdata = $db->dbquery_first('SELECT username, passwort FROM '.$db->db_prefix."admin WHERE BINARY(username) = '".$newusername."' AND passwort = MD5(CONCAT('".$newpasswort."', chili))");
 
-    $cookiestringval = bin2hex($newcookdata['username'] .'#'. $newcookdata['passwort']);
-    setcookie($scriptconf['COOKPREFIX'].'admin', $cookiestringval, time()+86400, '/');
+    $cookiestringval = bin2hex($newcookdata['username'].'#'.$newcookdata['passwort']);
+    setcookie($scriptconf['COOKPREFIX'].'admin', $cookiestringval, time() + 86400, '/');
 
-    redirect($scriptconf['ADMINURL'] .'/'. SCRIPTNAME . '?go=startseite', 1, 'Admindaten erfolgreich ge&auml;ndert');
+    redirect($scriptconf['ADMINURL'].'/'.SCRIPTNAME.'?go=startseite', 1, 'Admindaten erfolgreich ge&auml;ndert');
     exit;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 // Ausloggen
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-function logout() {
+function logout()
+{
     global $scriptconf;
 
-    setcookie($scriptconf['COOKPREFIX'].'admin', '', time()-1586400, '/');
+    setcookie($scriptconf['COOKPREFIX'].'admin', '', time() - 1586400, '/');
 
     login(2);
     exit;
@@ -626,23 +627,24 @@ function logout() {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 // Adminlog
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-function adminlog() {
+function adminlog()
+{
     passdatencheck();
     global $scriptconf, $db;
 
-    $los             = isset($_GET['los']) && $_GET['los'] != '' ? datensaver($_GET['los'], 10, 3) : 1;
-    $per_page         = 50;
-    $anz             = ($los-1) * $per_page;
+    $los = isset($_GET['los']) && $_GET['los'] != '' ? datensaver($_GET['los'], 10, 3) : 1;
+    $per_page = 50;
+    $anz = ($los - 1) * $per_page;
 
     $sektion = 'Statistik der Adminloginversuche';
     echo globaler_header($sektion, '', '', '');
     echo globallayoutoben($sektion, BEREICHSNAVI);
 
-    list($result, $sumad, $alle) = $db->run_dbqueryanz("SELECT SQL_CALC_FOUND_ROWS logid, aktion, ".$db->datumsformate('aktzeit', 1, 2)." AS logtime, aktip, aktionkomm FROM ".$db->db_prefix."adminlog WHERE mem_id = 0 AND aktion IN(1,2) ORDER BY aktzeit DESC LIMIT ".$anz.", ".$per_page, 1);
+    list($result, $sumad, $alle) = $db->run_dbqueryanz('SELECT SQL_CALC_FOUND_ROWS logid, aktion, '.$db->datumsformate('aktzeit', 1, 2).' AS logtime, aktip, aktionkomm FROM '.$db->db_prefix.'adminlog WHERE mem_id = 0 AND aktion IN(1,2) ORDER BY aktzeit DESC LIMIT '.$anz.', '.$per_page, 1);
 
     // Seitennavidaten generieren, falls noetig
     if ($alle > $per_page) {
-        $navilinks = pager($alle, $los, $per_page, SCRIPTNAME . "?go=adminlog&amp;los", 1, 3, 0);
+        $navilinks = pager($alle, $los, $per_page, SCRIPTNAME.'?go=adminlog&amp;los', 1, 3, 0);
         $navigationslinks = '<tr>
             <td class="innenh" colspan="4" align="right">'.$navilinks.'</td>
         </tr>
@@ -650,7 +652,6 @@ function adminlog() {
     } else {
         $navigationslinks = '';
     }
-
 
     $logdata = '';
     if ($sumad > 0) {
@@ -673,9 +674,7 @@ function adminlog() {
     }
 
     echo '<form action="'.SCRIPTNAME.'" method="POST">'."\n";
-    echo '<input type="hidden" name="go" value="adminlogdel">'."\n";
-
-    ?>
+    echo '<input type="hidden" name="go" value="adminlogdel">'."\n"; ?>
 
 
     <table width="100%" cellspacing="1" cellpadding="0" border="0" class="innen">
@@ -713,27 +712,28 @@ function adminlog() {
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 // Adminlog leeren
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-function adminlogdel() {
+function adminlogdel()
+{
     passdatencheck();
     global $scriptconf, $db;
 
-    $db->run_delete_query('DELETE FROM', 'adminlog', "WHERE mem_id = 0 AND aktion IN(1,2)");
-    
-    redirect($scriptconf['ADMINURL'] .'/'. SCRIPTNAME . '?go=adminlog', 1, 'Logeintr&auml;ge gel&ouml;scht...');
+    $db->run_delete_query('DELETE FROM', 'adminlog', 'WHERE mem_id = 0 AND aktion IN(1,2)');
+
+    redirect($scriptconf['ADMINURL'].'/'.SCRIPTNAME.'?go=adminlog', 1, 'Logeintr&auml;ge gel&ouml;scht...');
     exit;
 }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 // PHP Infos
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-function info() {
+function info()
+{
     global $scriptconf;
     passdatencheck();
 
     $sektion = 'PHP Infos';
     echo globaler_header($sektion, '', '', '');
-    echo globallayoutoben($sektion, BEREICHSNAVI);
-    ?>
+    echo globallayoutoben($sektion, BEREICHSNAVI); ?>
 
     <table width="100%" cellspacing="1" cellpadding="0" border="0" class="innen">
     <?php echo trl(); ?>

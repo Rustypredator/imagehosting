@@ -1,6 +1,7 @@
 <?php
+
 // Zugriff ueber $dbdaten[server], $dbdaten[datenbank] usw.
-$dbdaten = array(
+$dbdaten = [
 // DATENBANKSERVER
 'server' 			=> '',
 // DATENBANK
@@ -10,6 +11,5 @@ $dbdaten = array(
 // DATENBANK PASSWORT
 'passwort' 		=> '',
 // DATENBANK TABELLEN PREFIX
-'prefix' 			=> ''
-);
-?>
+'prefix' 			=> '',
+];

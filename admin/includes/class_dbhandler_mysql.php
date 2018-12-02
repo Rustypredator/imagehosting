@@ -6,7 +6,7 @@ if (!defined('SCRIPTSECURE')) {
     exit;
 }
 
-require_once SETUP_PFAD ."setup/dbdaten.php";
+require_once SETUP_PFAD.'setup/dbdaten.php';
 define('DBSERVER', $dbdaten['server']);
 define('DBDATENBANK', $dbdaten['datenbank']);
 define('DBUSER', $dbdaten['user']);
@@ -14,30 +14,31 @@ define('DBPASS', $dbdaten['passwort']);
 define('DBPREFIX', $dbdaten['prefix']);
 
 /**
- * DB-Handler
+ * DB-Handler.
  *
  * @category Blah
- * @package  Category
+ *
  * @author   Name <email@email.com>
  * @license  http://url.com MIT
+ *
  * @link     http://url.com
  */
-class dbhandler_mysql {
-
+class dbhandler_mysql
+{
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
     // Variablendefinition
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 
-    var $affected_rows = 0;
-    var $sqllink_id = 0;
-    var $sqlquery_id = 0;
+    public $affected_rows = 0;
+    public $sqllink_id = 0;
+    public $sqlquery_id = 0;
 
     /**
-     * DB Daten Constructor
+     * DB Daten Constructor.
      *
      * @return void
      */
-    function dbhandler_mysql()
+    public function dbhandler_mysql()
     {
         $this->db_server = DBSERVER;
         $this->db_username = DBUSER;
@@ -45,25 +46,25 @@ class dbhandler_mysql {
         $this->db_datenbank = DBDATENBANK;
         $this->db_prefix = DBPREFIX;
     }
-    
+
     /**
-     * Datenbankverbindung herstellen
+     * Datenbankverbindung herstellen.
      *
      * @return void
      */
-    function db_connect()
+    public function db_connect()
     {
         global $scriptconf;
         $this->sqllink_id = @mysql_connect($this->db_server, $this->db_username, $this->db_passwort);
 
         if (!$this->sqllink_id) {
-            $this->print_fatal_error('', '', "Datenbankserver nicht erreichbar: <b>".$this->db_server."</b>.", '');
+            $this->print_fatal_error('', '', 'Datenbankserver nicht erreichbar: <b>'.$this->db_server.'</b>.', '');
         }
 
         $db_select_ok = 0;
         if (!@mysql_select_db($this->db_datenbank, $this->sqllink_id)) {
             $db_select_ok = 0;
-            $this->print_fatal_error('', '', "Datenbank nicht vorhanden: <b>".$this->db_datenbank."</b>.", '');
+            $this->print_fatal_error('', '', 'Datenbank nicht vorhanden: <b>'.$this->db_datenbank.'</b>.', '');
         } else {
             $db_select_ok = 1;
         }
@@ -81,86 +82,89 @@ class dbhandler_mysql {
     }
 
     /**
-     * Setupwerte holen
+     * Setupwerte holen.
      *
      * @param string $prog_id_string TODO: this
-     * 
+     *
      * @return void
      */
-    function get_systemdaten($prog_id_string = '')
+    public function get_systemdaten($prog_id_string = '')
     {
         if ($prog_id_string != '') {
-            list($result, $gesamt, $alle) = $this->run_dbqueryanz("SELECT cname, cwert FROM ".$this->db_prefix."system WHERE prog_nr IN(".$prog_id_string.")", 0);
+            list($result, $gesamt, $alle) = $this->run_dbqueryanz('SELECT cname, cwert FROM '.$this->db_prefix.'system WHERE prog_nr IN('.$prog_id_string.')', 0);
         } else {
-            list($result, $gesamt, $alle) = $this->run_dbqueryanz("SELECT cname, cwert FROM ".$this->db_prefix."system", 0);
+            list($result, $gesamt, $alle) = $this->run_dbqueryanz('SELECT cname, cwert FROM '.$this->db_prefix.'system', 0);
         }
 
-        $setup = array();
+        $setup = [];
 
         if ($gesamt > 0) {
             while ($row = mysql_fetch_array($result)) {
-                $setup[$row["cname"]] = $row["cwert"];
+                $setup[$row['cname']] = $row['cwert'];
             }
         } else {
-            $this->print_fatal_error('', '', "Setupdaten konnten nicht gelesen werden.", '');
+            $this->print_fatal_error('', '', 'Setupdaten konnten nicht gelesen werden.', '');
         }
+
         return $setup;
     }
 
     /**
-     * Datenbankverbindung beenden
+     * Datenbankverbindung beenden.
      *
      * @return void
      */
-    function db_close()
+    public function db_close()
     {
         if (!mysql_close()) {
-            $this->print_fatal_error('', '', "Datenbankverbindung konnte nicht geschlossen werden.", '');
+            $this->print_fatal_error('', '', 'Datenbankverbindung konnte nicht geschlossen werden.', '');
         }
     }
-    
+
     /**
-     * Datenbankdaten escapen
+     * Datenbankdaten escapen.
      *
      * @param string $value Text to escape
-     * 
+     *
      * @return void
      */
-    function quoteval($value)
+    public function quoteval($value)
     {
         if (get_magic_quotes_gpc()) {
             $value = stripslashes($value);
         }
+
         return mysql_real_escape_string($value);
     }
-    
+
     /**
-     * Datenbankquery ausfuehren
+     * Datenbankquery ausfuehren.
      *
      * @param string $querysql SQL-Befehl
-     * 
+     *
      * @return void
      */
-    function db_query($querysql)
+    public function db_query($querysql)
     {
         $this->sqlquery_id = @mysql_query($querysql, $this->sqllink_id);
 
         if (!$this->sqlquery_id) {
-            $this->print_fatal_error(__LINE__, __FILE__, "Kann SQL Query nicht verarbeiten.<br><b>Query:</b><br><br><code>".$querysql."</code> ", mysql_error());
+            $this->print_fatal_error(__LINE__, __FILE__, 'Kann SQL Query nicht verarbeiten.<br><b>Query:</b><br><br><code>'.$querysql.'</code> ', mysql_error());
         }
-            
+
         $this->affected_rows = @mysql_affected_rows();
+
         return $this->sqlquery_id;
     }
 
     /**
-     * Datenbankquerys (SELECT, einzelne Zeile als Array)
+     * Datenbankquerys (SELECT, einzelne Zeile als Array).
      *
-     * @param integer $sqlquery_id Query-Id? TODO: Beschreibung
-     * 
+     * @param int $sqlquery_id Query-Id? TODO: Beschreibung
+     *
      * @return void
      */
-    function get_single_row($sqlquery_id = -1)
+    public function get_single_row($sqlquery_id = -1)
     {
         if ($sqlquery_id != -1) {
             $this->sqlquery_id = $sqlquery_id;
@@ -168,22 +172,23 @@ class dbhandler_mysql {
         if (isset($this->sqlquery_id)) {
             $this->ergebnis = @mysql_fetch_array($this->sqlquery_id);
         } else {
-            $this->print_fatal_error(__LINE__, __FILE__, "Fehler bei der Datenbankabfrage.<br><b>Diese Query ID:</b> ".$this->sqlquery_id." liefert keine Ergebnisse", mysql_error());
+            $this->print_fatal_error(__LINE__, __FILE__, 'Fehler bei der Datenbankabfrage.<br><b>Diese Query ID:</b> '.$this->sqlquery_id.' liefert keine Ergebnisse', mysql_error());
         }
+
         return $this->ergebnis;
     }
 
     /**
      * Datenbankquerys (SELECT, ID und Trefferanzahl fuer While)
      * oder
-     * Datenbankquerys (SELECT, ID, SELECT FOUND_ROWS und Trefferanzahl fuer While)
+     * Datenbankquerys (SELECT, ID, SELECT FOUND_ROWS und Trefferanzahl fuer While).
      *
-     * @param string  $querysql SQL-Befehl
-     * @param integer $foundrow TODO: Beschreibung
-     * 
+     * @param string $querysql SQL-Befehl
+     * @param int    $foundrow TODO: Beschreibung
+     *
      * @return void
      */
-    function run_dbqueryanz($querysql, $foundrow = 0)
+    public function run_dbqueryanz($querysql, $foundrow = 0)
     {
         $sqlquery_id = $this->db_query($querysql);
         $menge = mysql_num_rows($sqlquery_id);
@@ -191,21 +196,22 @@ class dbhandler_mysql {
         if ($foundrow) {
             $anzahl_gesamt = $this->found_row($sqlquery_id);
         }
-        return array($sqlquery_id, $menge, $anzahl_gesamt);
+
+        return [$sqlquery_id, $menge, $anzahl_gesamt];
     }
 
     /**
-     * Datenbankquerys (SELECT, alle Zeilen der Ergebnismenge als Array)
+     * Datenbankquerys (SELECT, alle Zeilen der Ergebnismenge als Array).
      *
-     * @param string  $querysql SQL-Befehl
-     * @param integer $foundrow TODO: Beschreibung
-     * 
+     * @param string $querysql SQL-Befehl
+     * @param int    $foundrow TODO: Beschreibung
+     *
      * @return void
      */
-    function get_all_rows($querysql, $foundrow = 0)
+    public function get_all_rows($querysql, $foundrow = 0)
     {
         $sqlquery_id = $this->db_query($querysql);
-        $returnarray = array();
+        $returnarray = [];
         $start = 0;
         while ($row = $this->get_single_row($sqlquery_id, $querysql)) {
             $start++;
@@ -216,68 +222,70 @@ class dbhandler_mysql {
             $anzahl_gesamt = $this->found_row();
         }
         $this->resultset_free($sqlquery_id);
-        return array($returnarray, $start);
+
+        return [$returnarray, $start];
     }
-    
+
     /**
-     * FOUND_ROWS
+     * FOUND_ROWS.
      *
      * @return void
      */
-    function found_row()
+    public function found_row()
     {
         $anzahl_gesamt = 0;
-        $sqlquery_id = $this->db_query("SELECT FOUND_ROWS() AS gesamttreffer");
+        $sqlquery_id = $this->db_query('SELECT FOUND_ROWS() AS gesamttreffer');
         $gesamt = $this->get_single_row($sqlquery_id);
         $anzahl_gesamt = $gesamt['gesamttreffer'];
 
         return $anzahl_gesamt;
     }
-    
+
     /**
-     * Datenbankdaten freigeben
+     * Datenbankdaten freigeben.
      *
-     * @param integer $sqlquery_id TODO: Beschreibung
-     * 
+     * @param int $sqlquery_id TODO: Beschreibung
+     *
      * @return void
      */
-    function resultset_free($sqlquery_id = -1)
+    public function resultset_free($sqlquery_id = -1)
     {
         if ($sqlquery_id != -1) {
             $this->sqlquery_id = $sqlquery_id;
         }
-        
+
         if (!@mysql_free_result($this->sqlquery_id)) {
-            $this->print_fatal_error('', '', "Ergebnismenge der Abfrage: <b>".$this->sqlquery_id."</b> konnte nicht freigegeben werden.", mysql_error());
+            $this->print_fatal_error('', '', 'Ergebnismenge der Abfrage: <b>'.$this->sqlquery_id.'</b> konnte nicht freigegeben werden.', mysql_error());
         }
     }
-    
+
     /**
-     * Datenbankquerys (SELECT, erste Zeile der Ergebnismenge als Array)
+     * Datenbankquerys (SELECT, erste Zeile der Ergebnismenge als Array).
      *
      * @param string $query_sql SQL-Befehl
-     * 
+     *
      * @return void
      */
-    function dbquery_first($query_sql)
+    public function dbquery_first($query_sql)
     {
         $query_id = $this->db_query($query_sql);
         $returnarray = $this->get_single_row($query_id);
+
         return $returnarray;
     }
-    
+
     /**
-     * Datenbankquerys (UPDATE)
+     * Datenbankquerys (UPDATE).
      *
      * @param string $updatebefehl TODO: Beschreibung
      * @param [type] $dbtab        TODO: Beschreibung
      * @param [type] $sqldata      TODO: Beschreibung
-     * 
+     *
      * @return void
      */
-    function run_update_query($updatebefehl, $dbtab, $sqldata)
+    public function run_update_query($updatebefehl, $dbtab, $sqldata)
     {
-        $qry = $updatebefehl ." `".$this->db_prefix.$dbtab."` SET " .$sqldata.';';
+        $qry = $updatebefehl.' `'.$this->db_prefix.$dbtab.'` SET '.$sqldata.';';
         if ($this->db_query($qry)) {
             return $this->affected_rows = @mysql_affected_rows();
         } else {
@@ -286,97 +294,98 @@ class dbhandler_mysql {
     }
 
     /**
-     * Datenbankquerys (DELETE)
+     * Datenbankquerys (DELETE).
      *
      * @param [type] $deletebefehl TODO: Beschreibung
      * @param [type] $dbtab        TODO: Beschreibung
      * @param [type] $sqldata      TODO: Beschreibung
-     * 
+     *
      * @return void
      */
-    function run_delete_query($deletebefehl, $dbtab, $sqldata)
+    public function run_delete_query($deletebefehl, $dbtab, $sqldata)
     {
-        $qry = $deletebefehl ." `".$this->db_prefix.$dbtab."` ".$sqldata.';';
+        $qry = $deletebefehl.' `'.$this->db_prefix.$dbtab.'` '.$sqldata.';';
         if ($this->db_query($qry)) {
             return $this->affected_rows = @mysql_affected_rows();
         } else {
             return 0;
         }
     }
-    
+
     /**
-     * Datenbankquerys (INSERT)
+     * Datenbankquerys (INSERT).
      *
      * @param [type] $insertbefehl TODO: Beschreibung
      * @param [type] $dbtab        TODO: Beschreibung
      * @param [type] $sqldata      TODO: Beschreibung
-     * 
+     *
      * @return void
      */
-    function run_insert_query($insertbefehl, $dbtab, $sqldata)
+    public function run_insert_query($insertbefehl, $dbtab, $sqldata)
     {
-        $qry = $insertbefehl ." `".$this->db_prefix.$dbtab."` ".$sqldata.';';
+        $qry = $insertbefehl.' `'.$this->db_prefix.$dbtab.'` '.$sqldata.';';
         if ($this->db_query($qry)) {
             return mysql_insert_id();
-            //return $this->affected_rows = @mysql_affected_rows();
+        //return $this->affected_rows = @mysql_affected_rows();
+        } else {
+            return 0;
         }
-        else return 0;
     }
-    
+
     /**
-     * Tabellen optimieren
+     * Tabellen optimieren.
      *
      * @param [type] $dbtab TODO: Beschreibung
-     * 
+     *
      * @return void
      */
-    function optimize_table($dbtab)
+    public function optimize_table($dbtab)
     {
-        $this->db_query("OPTIMIZE TABLE `".$this->db_prefix.$dbtab."`");
+        $this->db_query('OPTIMIZE TABLE `'.$this->db_prefix.$dbtab.'`');
     }
-    
+
     /**
-     * Tabellen leeren
+     * Tabellen leeren.
      *
      * @param [type] $dbtab TODO: Beschreibung
-     * 
+     *
      * @return void
      */
-    function truncate_table($dbtab)
+    public function truncate_table($dbtab)
     {
-        $this->db_query("TRUNCATE TABLE `".$this->db_prefix.$dbtab."`");
+        $this->db_query('TRUNCATE TABLE `'.$this->db_prefix.$dbtab.'`');
     }
-    
+
     /**
-     * Tabellen sperren
+     * Tabellen sperren.
      *
      * @param [type] $dbtab TODO: Beschreibung
-     * 
-     * @return void
-     */
-    function lock_table($dbtab)
-    {
-        $this->db_query("LOCK TABLES `".$this->db_prefix.$dbtab."` WRITE");
-    }
-    
-    /**
-     * Tabellen entsperren
      *
      * @return void
      */
-    function unlock_table()
+    public function lock_table($dbtab)
     {
-        $this->db_query("UNLOCK TABLES");
+        $this->db_query('LOCK TABLES `'.$this->db_prefix.$dbtab.'` WRITE');
     }
-    
+
     /**
-     * Datenbankquerys (SELECT, einzelne Zeile als Array)
+     * Tabellen entsperren.
      *
-     * @param integer $sqlquery_id TODO: Beschreibung
-     * 
      * @return void
      */
-    function fetch_fieldnamen($sqlquery_id = -1)
+    public function unlock_table()
+    {
+        $this->db_query('UNLOCK TABLES');
+    }
+
+    /**
+     * Datenbankquerys (SELECT, einzelne Zeile als Array).
+     *
+     * @param int $sqlquery_id TODO: Beschreibung
+     *
+     * @return void
+     */
+    public function fetch_fieldnamen($sqlquery_id = -1)
     {
         if ($sqlquery_id != -1) {
             $this->sqlquery_id = $sqlquery_id;
@@ -384,19 +393,20 @@ class dbhandler_mysql {
         if (isset($this->sqlquery_id)) {
             $this->fetchergebnis = @mysql_fetch_field($this->sqlquery_id);
         } else {
-            $this->print_fatal_error(__LINE__, __FILE__, "Fehler bei der Datenbankabfrage.<br><b>Diese Query ID:</b> ".$this->sqlquery_id." liefert keine Ergebnisse", mysql_error());
+            $this->print_fatal_error(__LINE__, __FILE__, 'Fehler bei der Datenbankabfrage.<br><b>Diese Query ID:</b> '.$this->sqlquery_id.' liefert keine Ergebnisse', mysql_error());
         }
+
         return $this->fetchergebnis;
     }
-    
+
     /**
-     * Datenbankquerys (SELECT, einzelne Zeile als Array) mysql_fetch_row
+     * Datenbankquerys (SELECT, einzelne Zeile als Array) mysql_fetch_row.
      *
-     * @param integer $sqlquery_id TODO: Beschreibung
-     * 
+     * @param int $sqlquery_id TODO: Beschreibung
+     *
      * @return void
      */
-    function fetch_single_row($sqlquery_id = -1)
+    public function fetch_single_row($sqlquery_id = -1)
     {
         if ($sqlquery_id != -1) {
             $this->sqlquery_id = $sqlquery_id;
@@ -405,21 +415,22 @@ class dbhandler_mysql {
         if (isset($this->sqlquery_id)) {
             $this->rowergebnis = @mysql_fetch_row($this->sqlquery_id);
         } else {
-            $this->print_fatal_error(__LINE__, __FILE__, "Fehler bei der Datenbankabfrage.<br><b>Diese Query ID:</b> ".$this->sqlquery_id." liefert keine Ergebnisse", mysql_error());
+            $this->print_fatal_error(__LINE__, __FILE__, 'Fehler bei der Datenbankabfrage.<br><b>Diese Query ID:</b> '.$this->sqlquery_id.' liefert keine Ergebnisse', mysql_error());
         }
+
         return $this->rowergebnis;
     }
-    
+
     /**
-     * Datumsformatquerys
+     * Datumsformatquerys.
      *
-     * @param [type]  $datefeldname   TODO: Beschreibung
-     * @param [type]  $datumsetupwert TODO: Beschreibung
-     * @param integer $hms            TODO: Beschreibung
-     * 
+     * @param [type] $datefeldname   TODO: Beschreibung
+     * @param [type] $datumsetupwert TODO: Beschreibung
+     * @param int    $hms            TODO: Beschreibung
+     *
      * @return void
      */
-    function datumsformate($datefeldname, $datumsetupwert, $hms = 1)
+    public function datumsformate($datefeldname, $datumsetupwert, $hms = 1)
     {
         if ($hms == 1) {
             if ($datumsetupwert == 1 && $hms == 1) {
@@ -450,32 +461,31 @@ class dbhandler_mysql {
                 $dq = "DATE_FORMAT($datefeldname, '%Y-%m-%d um %T')";
             }
         }
+
         return $dq;
     }
-    
+
     /**
-     * Script Fehlermeldungen aller Art ausgeben
+     * Script Fehlermeldungen aller Art ausgeben.
      *
      * @param string $lineinfo         TODO: Beschreibung
      * @param string $fileinfo         TODO: Beschreibung
      * @param string $fehlertext       TODO: Beschreibung
      * @param string $mysql_error_info TODO: Beschreibung
-     * 
+     *
      * @return void
      */
-    function print_fatal_error($lineinfo = '', $fileinfo = '', $fehlertext = '', $mysql_error_info = '')
+    public function print_fatal_error($lineinfo = '', $fileinfo = '', $fehlertext = '', $mysql_error_info = '')
     {
         $fehlerinfo = '';
         if ($lineinfo != '' && $fileinfo != '') {
-            $fehlerinfo .= "<b>Fehler in Zeile ".$lineinfo." im Script ".$fileinfo."</b><br><br>\n\n";
+            $fehlerinfo .= '<b>Fehler in Zeile '.$lineinfo.' im Script '.$fileinfo."</b><br><br>\n\n";
         }
-        $fehlerinfo .= $fehlertext . "<br><br>\n\n";
+        $fehlerinfo .= $fehlertext."<br><br>\n\n";
 
         if ($mysql_error_info != '') {
-            $fehlerinfo .= "<b>MySQL-Error:</b><br>".$mysql_error_info;
-        }
-
-        ?>
+            $fehlerinfo .= '<b>MySQL-Error:</b><br>'.$mysql_error_info;
+        } ?>
         <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
         <html>
         <head>
