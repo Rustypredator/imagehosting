@@ -50,7 +50,7 @@ default:
 }
 
 /**
- * Installation Startseite
+ * Installation Startseite.
  *
  * @return void
  */
@@ -117,7 +117,7 @@ function step1()
 }
 
 /**
- * Installation - Dateitest
+ * Installation - Dateitest.
  *
  * @return void
  */
@@ -225,8 +225,7 @@ function step2()
         echo '<tr>
         <td  colspan="3" class="innend" align="center"><input class="los" type="Submit" value="Weiter zu Schritt 3"></td>
         </tr>';
-    }
-    ?>
+    } ?>
     <?php echo trl(3); ?>
     </table>
     </form>
@@ -236,7 +235,7 @@ function step2()
 }
 
 /**
- * Installation - Datenbankdaten
+ * Installation - Datenbankdaten.
  *
  * @return void
  */
@@ -291,7 +290,7 @@ function step3()
 }
 
 /**
- * Installation - Datenbankdaten speichern
+ * Installation - Datenbankdaten speichern.
  *
  * @return void
  */
@@ -421,7 +420,7 @@ function step4()
     exit;
 }
 /**
- * Installation - Datenbankdaten
+ * Installation - Datenbankdaten.
  *
  * @return void
  */
@@ -493,7 +492,7 @@ function step5()
 }
 
 /**
- * Installation - Datenbankdaten
+ * Installation - Datenbankdaten.
  *
  * @return void
  */
@@ -779,7 +778,7 @@ function step6()
 }
 
 /**
- * Installation - Zwischenschritt vor Abschlusstest
+ * Installation - Zwischenschritt vor Abschlusstest.
  *
  * @return void
  */
@@ -813,7 +812,7 @@ function step7()
 }
 
 /**
- * Installation - Abschlusstest
+ * Installation - Abschlusstest.
  *
  * @return void
  */
@@ -862,11 +861,11 @@ function step8()
 }
 
 /**
- * Hilfsroutinen
+ * Hilfsroutinen.
  *
- * @param [type]  $file  TODO: Beschreibung
- * @param boolean $octal TODO: Beschreibung
- * 
+ * @param [type] $file  TODO: Beschreibung
+ * @param bool   $octal TODO: Beschreibung
+ *
  * @return void
  */
 function file_perms($file, $octal = false)
@@ -882,10 +881,10 @@ function file_perms($file, $octal = false)
 }
 
 /**
- * Index html Datei fuer Shopverzeichnisse anlegen
+ * Index html Datei fuer Shopverzeichnisse anlegen.
  *
  * @param [type] $save_pfad TODO: Beschreibung
- * 
+ *
  * @return void
  */
 function create_index_file($save_pfad)
@@ -896,13 +895,13 @@ function create_index_file($save_pfad)
 }
 
 /**
- * Globaler Header
+ * Globaler Header.
  *
  * @param string $seitentitel TODO: Beschreibung
  * @param string $meta        TODO: Beschreibung
  * @param string $jsscript    TODO: Beschreibung
  * @param string $zusatzdaten TODO: Beschreibung
- * 
+ *
  * @return void
  */
 function install_header($seitentitel = '', $meta = '', $jsscript = '', $zusatzdaten = '')
@@ -911,8 +910,8 @@ function install_header($seitentitel = '', $meta = '', $jsscript = '', $zusatzda
 
     $contentarray = [
         'SEITENTITEL' => $seitentitel,
-        'META' => $meta,
-        'JSSCRIPT' => $jsscript,
+        'META'        => $meta,
+        'JSSCRIPT'    => $jsscript,
         'ZUSATZDATEN' => $zusatzdaten,
     ];
     // Templatename
@@ -922,10 +921,10 @@ function install_header($seitentitel = '', $meta = '', $jsscript = '', $zusatzda
 }
 
 /**
- * Globales oberes Layout - Installer
+ * Globales oberes Layout - Installer.
  *
  * @param string $seitentitel TODO: Beschreibung
- * 
+ *
  * @return void
  */
 function install_oben($seitentitel = '')
@@ -942,7 +941,7 @@ function install_oben($seitentitel = '')
 }
 
 /**
- * Globales unteres Layout - Installer
+ * Globales unteres Layout - Installer.
  *
  * @return void
  */
@@ -956,12 +955,12 @@ function install_unten()
 }
 
 /**
- * Script oder Benutzerfehlerausgabe Adminbereich
+ * Script oder Benutzerfehlerausgabe Adminbereich.
  *
- * @param [type]  $fehlertitel   TODO: Beschreibung
- * @param [type]  $fehlermeldung TODO: Beschreibung
- * @param integer $backlink      TODO: Beschreibung
- * 
+ * @param [type] $fehlertitel   TODO: Beschreibung
+ * @param [type] $fehlermeldung TODO: Beschreibung
+ * @param int    $backlink      TODO: Beschreibung
+ *
  * @return void
  */
 function fehlerausgabeinstall($fehlertitel, $fehlermeldung, $backlink = 1)
@@ -973,7 +972,7 @@ function fehlerausgabeinstall($fehlertitel, $fehlermeldung, $backlink = 1)
     $backlinkcode = $backlink == 1 ? '<br><br><div align="center"><a href="javascript:history.go(-1)">Bitte zur&uuml;ckgehen und berichtigen</a></div>' : '';
 
     $contentarray = [
-        'TEXTTOP' => $fehlertitel,
+        'TEXTTOP'  => $fehlertitel,
         'TEXTCONT' => "$fehlermeldung $backlinkcode",
     ];
     // Templatename
@@ -985,10 +984,10 @@ function fehlerausgabeinstall($fehlertitel, $fehlermeldung, $backlink = 1)
 }
 
 /**
- * Trennlinie
+ * Trennlinie.
  *
  * @param string $cs colspan
- * 
+ *
  * @return void
  */
 function trl($cs = '')
@@ -1003,12 +1002,12 @@ function trl($cs = '')
 }
 
 /**
- * Redirect Routine
+ * Redirect Routine.
  *
- * @param [type]  $url     TODO: Beschreibung
- * @param integer $wlz     TODO: Beschreibung
- * @param string  $infotxt TODO: Beschreibung
- * 
+ * @param [type] $url     TODO: Beschreibung
+ * @param int    $wlz     TODO: Beschreibung
+ * @param string $infotxt TODO: Beschreibung
+ *
  * @return void
  */
 function redirect($url, $wlz = 1, $infotxt = '')
@@ -1026,7 +1025,7 @@ function redirect($url, $wlz = 1, $infotxt = '')
     echo install_header('Weiterleitung', '<meta http-equiv="refresh" content="'.$wlz.'; URL='.$url.'">', '', '');
     echo '<br><br><br><table cellspacing="2" cellpadding="2" border="0" width="100%"><tr><td width="20%">&nbsp;</td><td width="60%">';
     $contentarray = [
-        'TEXTTOP' => '<b>Weiterleitung</b>',
+        'TEXTTOP'  => '<b>Weiterleitung</b>',
         'TEXTCONT' => $infotxt.'<br><br>Sie werden '.$wlwort.' weitergeleitet, sollte das nicht funktionieren bitte <a href="'.$url.'">hier klicken</a><br><br><br>',
     ];
 
