@@ -65,7 +65,7 @@ default:
 }
 
 /**
- * Alle Bilder auflisten
+ * Alle Bilder auflisten.
  *
  * @return void
  */
@@ -161,7 +161,7 @@ function liste()
 }
 
 /**
- * Neue Bilder der letzten 24 Stunden auflisten
+ * Neue Bilder der letzten 24 Stunden auflisten.
  *
  * @return void
  */
@@ -258,7 +258,7 @@ function neue()
 }
 
 /**
- * Bild loeschen ausfuehren
+ * Bild loeschen ausfuehren.
  *
  * @return void
  */
@@ -306,7 +306,7 @@ function dp()
 }
 
 /**
- * Alte Bilder loeschen
+ * Alte Bilder loeschen.
  *
  * @return void
  */
@@ -355,7 +355,7 @@ function op()
 }
 
 /**
- * Alte Bilder endgueltig loeschen
+ * Alte Bilder endgueltig loeschen.
  *
  * @return void
  */
@@ -427,7 +427,7 @@ function opdel()
 }
 
 /**
- * Alte Trafficlogs loeschen - Auswahl nach Monat/Jahr
+ * Alte Trafficlogs loeschen - Auswahl nach Monat/Jahr.
  *
  * @return void
  */
@@ -496,7 +496,7 @@ function tl()
 }
 
 /**
- * Alte Counter Logs loeschen
+ * Alte Counter Logs loeschen.
  *
  * @return void
  */

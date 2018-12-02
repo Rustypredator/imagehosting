@@ -76,10 +76,10 @@ default:
 }
 
 /**
- * Logindateneingabe Formular
+ * Logindateneingabe Formular.
  *
  * @param string $loginerr TODO: Beschreibung
- * 
+ *
  * @return void
  */
 function login($loginerr = '')
@@ -151,7 +151,7 @@ function login($loginerr = '')
 }
 
 /**
- * Logindaten checken und Cookie setzen, oder zurueck zum Login
+ * Logindaten checken und Cookie setzen, oder zurueck zum Login.
  *
  * @return void
  */
@@ -212,7 +212,7 @@ function logincheck()
 }
 
 /**
- * Startseite der Administration
+ * Startseite der Administration.
  *
  * @return void
  */
@@ -275,7 +275,7 @@ function startseite()
 }
 
 /**
- * Systemdaten
+ * Systemdaten.
  *
  * @return void
  */
@@ -318,7 +318,7 @@ function systemdaten()
 }
 
 /**
- * Systemdaten speichern
+ * Systemdaten speichern.
  *
  * @return void
  */
@@ -435,7 +435,7 @@ function systemdatensave()
 }
 
 /**
- * Admindaten
+ * Admindaten.
  *
  * @return void
  */
@@ -488,7 +488,7 @@ function admindaten()
 }
 
 /**
- * Neue Admindaten speichern
+ * Neue Admindaten speichern.
  *
  * @return void
  */
@@ -628,7 +628,7 @@ function newadmindatensave()
 }
 
 /**
- * Ausloggen
+ * Ausloggen.
  *
  * @return void
  */
@@ -643,7 +643,7 @@ function logout()
 }
 
 /**
- * Adminlog
+ * Adminlog.
  *
  * @return void
  */
@@ -731,7 +731,7 @@ function adminlog()
 }
 
 /**
- * Adminlog leeren
+ * Adminlog leeren.
  *
  * @return void
  */
@@ -747,7 +747,7 @@ function adminlogdel()
 }
 
 /**
- * PHP Infos
+ * PHP Infos.
  *
  * @return void
  */
