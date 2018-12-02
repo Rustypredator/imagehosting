@@ -7,9 +7,13 @@ if (!defined('SCRIPTSECURE')) {
 }
 
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-// Trennlinie
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+/**
+ * Trennlinie
+ *
+ * @param string $cs colspan
+ * 
+ * @return void
+ */
 function trl($cs = '')
 {
     $cshtml = $cs != '' ? "colspan=\"$cs\"" : '';
@@ -21,9 +25,16 @@ function trl($cs = '')
 }
 
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Globaler Header
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+/**
+ * Globaler Header
+ *
+ * @param string $seitentitel Seitentitel
+ * @param string $meta        Meta Infos
+ * @param string $jsscript    Javascript
+ * @param string $zusatzdaten Zusatz
+ * 
+ * @return void
+ */
 function globaler_header($seitentitel='', $meta='', $jsscript='', $zusatzdaten='')
 {
     global $tparse;
@@ -37,9 +48,18 @@ function globaler_header($seitentitel='', $meta='', $jsscript='', $zusatzdaten='
     $tparse->get_tpldata(ROOT_PFAD . "templates/globalheader.html");
     return $tparse->templateparser($contentarray);
 }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Globaler Header Popup
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+/**
+ * Globaler Header Popup
+ *
+ * @param string $seitentitel Seitentitel
+ * @param string $meta        Metadaten
+ * @param string $jsscript    Javascript
+ * @param string $zusatzdaten Zusatz
+ * @param string $bodyzusatz  Zusatz zum Body
+ * 
+ * @return void
+ */
 function globaler_header_pop($seitentitel='', $meta='', $jsscript='', $zusatzdaten='', $bodyzusatz='')
 {
     global $tparse;
@@ -55,9 +75,15 @@ function globaler_header_pop($seitentitel='', $meta='', $jsscript='', $zusatzdat
     $tparse->get_tpldata(ROOT_PFAD . "templates/globalheaderpopup.html");
     return $tparse->templateparser($contentarray);
 }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Globales oberes Layout - Admin
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+/**
+ * Globales oberes Layout - Admin
+ *
+ * @param string $navifile    Name der Navifile
+ * @param string $seitentitel Seitentitel
+ * 
+ * @return void
+ */
 function globallayoutoben($navifile, $seitentitel='')
 {
     global $scriptconf, $db, $tparse;
@@ -70,10 +96,14 @@ function globallayoutoben($navifile, $seitentitel='')
     return $tparse->templateparser($contentarray);
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Globaler Footer
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-function globaler_footer($simple = '')
+/**
+ * Globaler Footer
+ *
+ * @param integer $simple 1|2 Simpler Footer
+ * 
+ * @return void
+ */
+function globaler_footer($simple = 0)
 {
     if ($simple == 1) {
         return "\n</div>\n</body>\n</html>";
@@ -88,9 +118,14 @@ function globaler_footer($simple = '')
         return $tparse->templateparser($contentarray);
     }
 }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Navigation
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+/**
+ * Navigation
+ *
+ * @param string $navifile Name der Navifile
+ * 
+ * @return void
+ */
 function get_navi($navifile='')
 {
     global $tparse;
@@ -101,9 +136,16 @@ function get_navi($navifile='')
     }
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Script oder Benutzerfehlerausgabe Adminbereich
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+/**
+ * Script oder Benutzerfehlerausgabe Adminbereich
+ *
+ * @param string  $fehlertitel   Titel
+ * @param string  $fehlermeldung Meldung
+ * @param string  $navdatei      Name der Navidatei
+ * @param integer $backlink      0|1 Zurück-Link ja/nein
+ * 
+ * @return void
+ */
 function fehlerausgabe($fehlertitel, $fehlermeldung, $navdatei, $backlink=1)
 {
     global $tparse;
@@ -124,9 +166,15 @@ function fehlerausgabe($fehlertitel, $fehlermeldung, $navdatei, $backlink=1)
     exit;
 }
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Script oder Benutzerfehlerausgabe Adminbereich - Popup
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+/**
+ * Script oder Benutzerfehlerausgabe Adminbereich - Popup
+ *
+ * @param string  $fehlertitel   Titel
+ * @param string  $fehlermeldung Meldung
+ * @param integer $backlink      0|1 Link Ja/Nein
+ * 
+ * @return void
+ */
 function fehlerausgabepop($fehlertitel,$fehlermeldung,$backlink=1)
 {
     global $tparse;
@@ -145,9 +193,16 @@ function fehlerausgabepop($fehlertitel,$fehlermeldung,$backlink=1)
     echo globaler_footer(2);
     exit;
 }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-// Redirect Routine
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+/**
+ * Redirect Routine
+ *
+ * @param string  $url     Weiterleitungs-Ziel
+ * @param integer $wlz     Weiterleitungs-Zeit
+ * @param string  $infotxt Informationstext
+ * 
+ * @return void
+ */
 function redirect($url, $wlz=1, $infotxt='')
 {
     global $tparse;
@@ -164,8 +219,8 @@ function redirect($url, $wlz=1, $infotxt='')
 
     echo '<br><br><br><table cellspacing="2" cellpadding="2" border="0" width="100%"><tr><td width="20%">&nbsp;</td><td width="60%">';
     $contentarray = array(
-    "TEXTTOP" => '<b>Weiterleitung</b>',
-    "TEXTCONT" => $infotxt."<br><br>Sie werden ".$wlwort." weitergeleitet, sollte das nicht funktionieren bitte <a href=\"".$url."\">hier klicken</a><br><br><br>",
+        "TEXTTOP" => '<b>Weiterleitung</b>',
+        "TEXTCONT" => $infotxt."<br><br>Sie werden ".$wlwort." weitergeleitet, sollte das nicht funktionieren bitte <a href=\"".$url."\">hier klicken</a><br><br><br>",
     );
 
     $tparse->get_tpldata(ROOT_PFAD . "templates/textausgaben.html");
