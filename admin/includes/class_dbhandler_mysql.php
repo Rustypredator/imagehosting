@@ -13,6 +13,15 @@ define('DBUSER', $dbdaten['user']);
 define('DBPASS', $dbdaten['passwort']);
 define('DBPREFIX', $dbdaten['prefix']);
 
+/**
+ * DB-Handler
+ *
+ * @category Blah
+ * @package  Category
+ * @author   Name <email@email.com>
+ * @license  http://url.com MIT
+ * @link     http://url.com
+ */
 class dbhandler_mysql {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
@@ -23,21 +32,25 @@ class dbhandler_mysql {
     var $sqllink_id = 0;
     var $sqlquery_id = 0;
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // DB Daten Constructor
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    function dbhandler_mysql() {
-
-    $this->db_server	= DBSERVER;
-    $this->db_username	= DBUSER;
-    $this->db_passwort	= DBPASS;
-    $this->db_datenbank	= DBDATENBANK;
-    $this->db_prefix	= DBPREFIX;
-
+    /**
+     * DB Daten Constructor
+     *
+     * @return void
+     */
+    function dbhandler_mysql()
+    {
+        $this->db_server = DBSERVER;
+        $this->db_username = DBUSER;
+        $this->db_passwort = DBPASS;
+        $this->db_datenbank = DBDATENBANK;
+        $this->db_prefix = DBPREFIX;
     }
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // Datenbankverbindung herstellen
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    
+    /**
+     * Datenbankverbindung herstellen
+     *
+     * @return void
+     */
     function db_connect()
     {
         global $scriptconf;
@@ -62,14 +75,18 @@ class dbhandler_mysql {
         */
 
         $this->db_server = '';
-        #$this->db_datenbank	= '';
+        //$this->db_datenbank = '';
         $this->db_username = '';
         $this->db_passwort = '';
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // Setupwerte holen
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    /**
+     * Setupwerte holen
+     *
+     * @param string $prog_id_string TODO: this
+     * 
+     * @return void
+     */
     function get_systemdaten($prog_id_string = '')
     {
         if ($prog_id_string != '') {
@@ -90,18 +107,25 @@ class dbhandler_mysql {
         return $setup;
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // Datenbankverbindung beenden
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    /**
+     * Datenbankverbindung beenden
+     *
+     * @return void
+     */
     function db_close()
     {
         if (!mysql_close()) {
             $this->print_fatal_error('', '', "Datenbankverbindung konnte nicht geschlossen werden.", '');
         }
     }
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // Datenbankdaten escapen
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    
+    /**
+     * Datenbankdaten escapen
+     *
+     * @param string $value Text to escape
+     * 
+     * @return void
+     */
     function quoteval($value)
     {
         if (get_magic_quotes_gpc()) {
@@ -109,23 +133,33 @@ class dbhandler_mysql {
         }
         return mysql_real_escape_string($value);
     }
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // Datenbankquery ausfuehren
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    
+    /**
+     * Datenbankquery ausfuehren
+     *
+     * @param string $querysql SQL-Befehl
+     * 
+     * @return void
+     */
     function db_query($querysql)
     {
         $this->sqlquery_id = @mysql_query($querysql, $this->sqllink_id);
 
         if (!$this->sqlquery_id) {
-            $this->print_fatal_error(__LINE__, __FILE__, "Kann SQL Query nicht verarbeiten.<br><b>Query:</b><br><br><code>".$querysql."</code> ",mysql_error());
+            $this->print_fatal_error(__LINE__, __FILE__, "Kann SQL Query nicht verarbeiten.<br><b>Query:</b><br><br><code>".$querysql."</code> ", mysql_error());
         }
             
         $this->affected_rows = @mysql_affected_rows();
         return $this->sqlquery_id;
     }
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // Datenbankquerys (SELECT, einzelne Zeile als Array)
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+    /**
+     * Datenbankquerys (SELECT, einzelne Zeile als Array)
+     *
+     * @param integer $sqlquery_id Query-Id? TODO: Beschreibung
+     * 
+     * @return void
+     */
     function get_single_row($sqlquery_id = -1)
     {
         if ($sqlquery_id != -1) {
@@ -138,11 +172,17 @@ class dbhandler_mysql {
         }
         return $this->ergebnis;
     }
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // Datenbankquerys (SELECT, ID und Trefferanzahl fuer While)
-    // oder
-    // Datenbankquerys (SELECT, ID, SELECT FOUND_ROWS und Trefferanzahl fuer While)
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+    /**
+     * Datenbankquerys (SELECT, ID und Trefferanzahl fuer While)
+     * oder
+     * Datenbankquerys (SELECT, ID, SELECT FOUND_ROWS und Trefferanzahl fuer While)
+     *
+     * @param string  $querysql SQL-Befehl
+     * @param integer $foundrow TODO: Beschreibung
+     * 
+     * @return void
+     */
     function run_dbqueryanz($querysql, $foundrow = 0)
     {
         $sqlquery_id = $this->db_query($querysql);
@@ -154,9 +194,14 @@ class dbhandler_mysql {
         return array($sqlquery_id, $menge, $anzahl_gesamt);
     }
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // Datenbankquerys (SELECT, alle Zeilen der Ergebnismenge als Array)
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    /**
+     * Datenbankquerys (SELECT, alle Zeilen der Ergebnismenge als Array)
+     *
+     * @param string  $querysql SQL-Befehl
+     * @param integer $foundrow TODO: Beschreibung
+     * 
+     * @return void
+     */
     function get_all_rows($querysql, $foundrow = 0)
     {
         $sqlquery_id = $this->db_query($querysql);
@@ -173,9 +218,12 @@ class dbhandler_mysql {
         $this->resultset_free($sqlquery_id);
         return array($returnarray, $start);
     }
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // FOUND_ROWS
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    
+    /**
+     * FOUND_ROWS
+     *
+     * @return void
+     */
     function found_row()
     {
         $anzahl_gesamt = 0;
@@ -185,9 +233,14 @@ class dbhandler_mysql {
 
         return $anzahl_gesamt;
     }
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // Datenbankdaten freigeben
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    
+    /**
+     * Datenbankdaten freigeben
+     *
+     * @param integer $sqlquery_id TODO: Beschreibung
+     * 
+     * @return void
+     */
     function resultset_free($sqlquery_id = -1)
     {
         if ($sqlquery_id != -1) {
@@ -198,18 +251,30 @@ class dbhandler_mysql {
             $this->print_fatal_error('', '', "Ergebnismenge der Abfrage: <b>".$this->sqlquery_id."</b> konnte nicht freigegeben werden.", mysql_error());
         }
     }
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // Datenbankquerys (SELECT, erste Zeile der Ergebnismenge als Array)
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    
+    /**
+     * Datenbankquerys (SELECT, erste Zeile der Ergebnismenge als Array)
+     *
+     * @param string $query_sql SQL-Befehl
+     * 
+     * @return void
+     */
     function dbquery_first($query_sql)
     {
         $query_id = $this->db_query($query_sql);
         $returnarray = $this->get_single_row($query_id);
         return $returnarray;
     }
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // Datenbankquerys (UPDATE)
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    
+    /**
+     * Datenbankquerys (UPDATE)
+     *
+     * @param string $updatebefehl TODO: Beschreibung
+     * @param [type] $dbtab        TODO: Beschreibung
+     * @param [type] $sqldata      TODO: Beschreibung
+     * 
+     * @return void
+     */
     function run_update_query($updatebefehl, $dbtab, $sqldata)
     {
         $qry = $updatebefehl ." `".$this->db_prefix.$dbtab."` SET " .$sqldata.';';
@@ -219,9 +284,16 @@ class dbhandler_mysql {
             return 0;
         }
     }
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // Datenbankquerys (DELETE)
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+
+    /**
+     * Datenbankquerys (DELETE)
+     *
+     * @param [type] $deletebefehl TODO: Beschreibung
+     * @param [type] $dbtab        TODO: Beschreibung
+     * @param [type] $sqldata      TODO: Beschreibung
+     * 
+     * @return void
+     */
     function run_delete_query($deletebefehl, $dbtab, $sqldata)
     {
         $qry = $deletebefehl ." `".$this->db_prefix.$dbtab."` ".$sqldata.';';
@@ -231,9 +303,16 @@ class dbhandler_mysql {
             return 0;
         }
     }
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // Datenbankquerys (INSERT)
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    
+    /**
+     * Datenbankquerys (INSERT)
+     *
+     * @param [type] $insertbefehl TODO: Beschreibung
+     * @param [type] $dbtab        TODO: Beschreibung
+     * @param [type] $sqldata      TODO: Beschreibung
+     * 
+     * @return void
+     */
     function run_insert_query($insertbefehl, $dbtab, $sqldata)
     {
         $qry = $insertbefehl ." `".$this->db_prefix.$dbtab."` ".$sqldata.';';
@@ -243,37 +322,60 @@ class dbhandler_mysql {
         }
         else return 0;
     }
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // Tabellen optimieren
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    
+    /**
+     * Tabellen optimieren
+     *
+     * @param [type] $dbtab TODO: Beschreibung
+     * 
+     * @return void
+     */
     function optimize_table($dbtab)
     {
         $this->db_query("OPTIMIZE TABLE `".$this->db_prefix.$dbtab."`");
     }
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // Tabellen leeren
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    
+    /**
+     * Tabellen leeren
+     *
+     * @param [type] $dbtab TODO: Beschreibung
+     * 
+     * @return void
+     */
     function truncate_table($dbtab)
     {
         $this->db_query("TRUNCATE TABLE `".$this->db_prefix.$dbtab."`");
     }
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // Tabellen sperren
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    
+    /**
+     * Tabellen sperren
+     *
+     * @param [type] $dbtab TODO: Beschreibung
+     * 
+     * @return void
+     */
     function lock_table($dbtab)
     {
         $this->db_query("LOCK TABLES `".$this->db_prefix.$dbtab."` WRITE");
     }
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // Tabellen entsperren
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    
+    /**
+     * Tabellen entsperren
+     *
+     * @return void
+     */
     function unlock_table()
     {
         $this->db_query("UNLOCK TABLES");
     }
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // Datenbankquerys (SELECT, einzelne Zeile als Array)
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    
+    /**
+     * Datenbankquerys (SELECT, einzelne Zeile als Array)
+     *
+     * @param integer $sqlquery_id TODO: Beschreibung
+     * 
+     * @return void
+     */
     function fetch_fieldnamen($sqlquery_id = -1)
     {
         if ($sqlquery_id != -1) {
@@ -286,9 +388,14 @@ class dbhandler_mysql {
         }
         return $this->fetchergebnis;
     }
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // Datenbankquerys (SELECT, einzelne Zeile als Array) mysql_fetch_row
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    
+    /**
+     * Datenbankquerys (SELECT, einzelne Zeile als Array) mysql_fetch_row
+     *
+     * @param integer $sqlquery_id TODO: Beschreibung
+     * 
+     * @return void
+     */
     function fetch_single_row($sqlquery_id = -1)
     {
         if ($sqlquery_id != -1) {
@@ -302,9 +409,16 @@ class dbhandler_mysql {
         }
         return $this->rowergebnis;
     }
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
-    // Datumsformatquerys
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - #
+    
+    /**
+     * Datumsformatquerys
+     *
+     * @param [type]  $datefeldname   TODO: Beschreibung
+     * @param [type]  $datumsetupwert TODO: Beschreibung
+     * @param integer $hms            TODO: Beschreibung
+     * 
+     * @return void
+     */
     function datumsformate($datefeldname, $datumsetupwert, $hms = 1)
     {
         if ($hms == 1) {
@@ -338,9 +452,17 @@ class dbhandler_mysql {
         }
         return $dq;
     }
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // Script Fehlermeldungen aller Art ausgeben 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
+    
+    /**
+     * Script Fehlermeldungen aller Art ausgeben
+     *
+     * @param string $lineinfo         TODO: Beschreibung
+     * @param string $fileinfo         TODO: Beschreibung
+     * @param string $fehlertext       TODO: Beschreibung
+     * @param string $mysql_error_info TODO: Beschreibung
+     * 
+     * @return void
+     */
     function print_fatal_error($lineinfo = '', $fileinfo = '', $fehlertext = '', $mysql_error_info = '')
     {
         $fehlerinfo = '';
@@ -389,8 +511,5 @@ class dbhandler_mysql {
         <?php
         exit;
     }
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
-    // Ende Datenbank class
 }
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - //
 ?>
